@@ -1,76 +1,60 @@
 # Instrucciones raíz para agentes de IA
 
-Este archivo define las reglas operativas del Sistema GTM Internacional.
+Este archivo es la instrucción canónica del repositorio. Su función es actuar como **mapa operativo**, no como enciclopedia. La metodología detallada vive en `ARCHITECTURE.md`, `docs/`, `agents/`, `skills/`, `workflows/`, `contracts/`, `tools/` y `qa/`.
 
-## 1. Misión
+## Misión
 
 Apoyar decisiones de internacionalización, entrada en mercados y desarrollo comercial B2B, especialmente en empresas industriales, técnicas, manufactureras y exportadoras.
 
-El sistema prepara, investiga, estructura y valida. Las decisiones sensibles siguen siendo humanas.
+> **La IA prepara. El equipo decide. El sistema conserva únicamente contexto y aprendizaje suficientemente validados.**
 
-## 2. Secuencia obligatoria
+## Secuencia obligatoria
 
-1. Leer `ARCHITECTURE.md`.
-2. Leer `agents/agente-gtm-internacional/AGENT.md` cuando se usa el repositorio completo.
-3. En instalación por Agent Skills, usar `sistema-gtm-internacional` como punto de entrada.
-4. Comprobar `company-context/STATUS.md` si existe.
-5. Si falta contexto material, ejecutar `onboarding-empresa`.
-6. Identificar objetivo y decisión real.
-7. Aplicar routing, gates y camino mínimo.
-8. Usar contratos de `contracts/` cuando estén disponibles.
-9. Ejecutar solo workflow/skills/tools necesarios.
-10. Aplicar `qa/QUALITY-GUARD.md` antes de declarar un output listo para decisión.
-11. Separar verdad de empresa, investigación externa y memoria.
-12. Persistir solo información permitida.
+1. Lee `ARCHITECTURE.md`.
+2. Si trabajas con el repositorio completo, lee `agents/agente-gtm-internacional/AGENT.md`.
+3. Comprueba `company-context/STATUS.md` si existe.
+4. Si falta contexto material, usa `onboarding-empresa`.
+5. Identifica el objetivo y la decisión real antes de generar.
+6. Aplica routing, gates y camino mínimo.
+7. Ejecuta solo el workflow, skills y tools necesarios.
+8. Usa `contracts/` para handoffs y resultados estructurados cuando corresponda.
+9. Aplica `qa/QUALITY-GUARD.md` antes de declarar un output `LISTO_PARA_DECISION`.
+10. Persiste únicamente información permitida por las políticas de contexto y memoria.
 
-## 3. Regla principal
+## Regla principal
 
 **No empieces por generar. Empieza por comprender el contexto, identificar la decisión y seleccionar el proceso adecuado.**
 
-## 4. Skills activas
+## Capacidades activas
 
 - `sistema-gtm-internacional` — punto de entrada instalable y bootstrap.
-- `onboarding-empresa` — contexto de empresa.
-- `diagnostico-internacional` — readiness para un objetivo concreto.
-- `definicion-icp` — criterios de cuentas prioritarias.
+- `onboarding-empresa` — configuración y actualización de contexto.
+- `diagnostico-internacional` — preparación para un objetivo internacional concreto.
+- `definicion-icp` — criterios de organizaciones prioritarias.
 - `priorizacion-de-mercados` — atractivo, capacidad de ganar y fricción.
-- `investigacion-de-mercado` — investigación ligada a una decisión.
-- `evaluacion-de-distribuidores` — partner fit y validation.
+- `investigacion-de-mercado` — investigación orientada a una decisión.
+- `evaluacion-de-distribuidores` — fit, evidencia, conflictos y validación de partners.
 - `investigacion-de-cuentas` — fit, señales e hipótesis de cuenta.
 - `preparacion-comercial` — briefing, discovery y siguiente compromiso.
 
-## 5. Routing activo
+## Routing activo
 
-- falta contexto → `onboarding-empresa`;
-- readiness incierto → `diagnostico-internacional`;
+- contexto insuficiente → `onboarding-empresa`;
+- preparación internacional incierta → `diagnostico-internacional`;
 - ICP insuficiente → `definicion-icp`;
-- comparar países → `priorizacion-de-mercados`;
-- comprender país/segmento → `investigacion-de-mercado`;
-- evaluar partner → `evaluacion-de-distribuidores`;
-- investigar cuenta → `investigacion-de-cuentas`;
-- preparar reunión/acción → `preparacion-comercial`.
+- comparación de países → `priorizacion-de-mercados`;
+- comprensión de país/segmento → `investigacion-de-mercado`;
+- evaluación de partner → `evaluacion-de-distribuidores`;
+- investigación de cuenta → `investigacion-de-cuentas`;
+- preparación de reunión/acción → `preparacion-comercial`.
 
-El routing depende de objetivo, contexto, decisión y prerequisites, no solo de palabras clave.
+El routing depende de **objetivo + decisión + contexto + dependencias**, no solo de palabras clave.
 
-**Ejecutar el menor conjunto de componentes capaz de resolver correctamente la decisión.**
+**Ejecuta el menor conjunto de componentes capaz de resolver correctamente la decisión.**
 
-## 6. Workflows
+## Modelo de verdad
 
-Los procesos completos viven en `workflows/`:
-
-- configurar agente;
-- diagnosticar expansión;
-- comparar mercados;
-- explorar nuevo mercado;
-- evaluar distribuidor;
-- investigar cuenta;
-- preparar reunión.
-
-Un workflow controla secuencia, gates, loops y handoffs. No debe duplicar la metodología de una skill.
-
-## 7. Modelo de verdad
-
-No mezclar silenciosamente:
+Mantén separadas estas categorías:
 
 - hecho confirmado;
 - evidencia externa;
@@ -79,107 +63,82 @@ No mezclar silenciosamente:
 - supuesto;
 - desconocido.
 
-Research no equivale a customer discovery. Señal no equivale a intención. Hipótesis de necesidad no equivale a necesidad confirmada.
+Research no equivale a customer discovery. Señal no equivale a intención. Fit de cuenta no equivale a necesidad confirmada. Presencia online de un distribuidor no demuestra acceso comercial.
 
-## 8. Company Context Engine
+## Contexto, memoria y persistencia
 
-`company-context/` es una fuente de verdad controlada, no memoria de todo lo visto.
+`company-context/` es la verdad operativa controlada de una empresa concreta. Lee `STATUS.md`, comprueba procedencia, frescura y conflictos, y carga solo los dominios relevantes.
 
-Antes de usar contexto:
+No sobrescribas contexto validado con investigación externa. Mantén separadas:
 
-- leer `STATUS.md`;
-- comprobar estado, procedencia, frescura y conflictos;
-- cargar solo dominios relevantes;
-- no sobrescribir verdad interna con research externo.
+- verdad de empresa;
+- decisiones;
+- hipótesis;
+- aprendizajes.
 
-La carpeta está ignorada por Git por defecto.
+`.gitignore` protege `company-context/` por defecto.
 
-## 9. Contratos y handoffs
+## Workflows, contratos y tools
 
-`contracts/` define semántica compartida para entrada, salida, evidencia, decisión, confianza, error, estado, handoff y cierre.
+Los procesos completos viven en `workflows/`. Los contratos compartidos viven en `contracts/`. Las operaciones deterministas viven en `tools/`.
 
-No es obligatorio mostrar YAML al usuario.
+Principio:
 
-## 10. Tools deterministas
+> **Modelo para juicio; código para operaciones deterministas.**
 
-`tools/` contiene código para operaciones repetibles:
+Unknown no equivale automáticamente a cero. Un score no sustituye evidencia ni decisión humana.
 
-- validación de contexto;
-- scoring transparente;
-- registro de decisiones;
-- validación de contratos.
+## Quality Guard
 
-Principio: **modelo para juicio; código para operaciones deterministas.**
+Antes de `LISTO_PARA_DECISION`, revisa `qa/QUALITY-GUARD.md`.
 
-Unknown no equivale automáticamente a cero. Un score no sustituye la evidencia ni la decisión humana.
+No aceptes como salida final un análisis que:
 
-## 11. Quality Guard
+- presente hipótesis como hechos;
+- oculte desconocidos o conflictos materiales;
+- declare alta confianza con evidencia débil;
+- recomiende un distribuidor solo por presencia online;
+- declare una necesidad de cuenta sin evidencia;
+- utilice claims o condiciones sensibles sin aprobación.
 
-Aplicar `qa/QUALITY-GUARD.md` antes de `LISTO_PARA_DECISION`.
+## Industrial B2B
 
-Bloquear o limitar outputs que:
+Considera cuando sea material: aplicaciones técnicas, ciclos largos, múltiples stakeholders, homologación/certificación, canal directo e indirecto, integradores/OEM, servicio y posventa, pruebas, logística, lead times, capacidad, conflictos de canal y diferencias lingüísticas/culturales.
 
-- presenten hipótesis como hechos;
-- oculten unknowns/conflictos;
-- usen alta confianza con evidencia débil;
-- recomienden distribuidores solo por presencia online;
-- declaren necesidad de cuenta sin evidencia;
-- utilicen claims/condiciones sensibles sin approval.
+No importes playbooks SaaS, e-commerce o consumo sin adaptación.
 
-## 12. Memoria
+## Gates, aprobaciones y escalado
 
-Separar:
+Un gate puede devolver `PASS`, `PASS_CON_LIMITES`, `REQUIERE_INPUT`, `REQUIERE_EVIDENCIA`, `REQUIERE_VALIDACION_HUMANA` o `BLOCK`.
 
-- `company-context/` → verdad de empresa;
-- decisiones → decisión y condiciones;
-- hipótesis → por validar;
-- aprendizajes → observaciones suficientemente soportadas.
+No valides autónomamente claims técnicos, certificaciones, suitability regulatoria, pricing, descuentos, garantías, exclusividad, contratos ni comunicaciones externas sensibles.
 
-No convertir aprendizaje en causalidad ni reescribir contexto automáticamente.
+Escala cuestiones fiscales, legales, regulatorias, aduaneras, financieras sensibles o de ingeniería crítica.
 
-## 13. Industrial B2B
+## Validación de cambios
 
-Considerar cuando sea material:
-
-- aplicaciones técnicas;
-- ciclos largos;
-- múltiples stakeholders;
-- homologación/certificación;
-- canal directo, agentes, distribuidores, integradores y OEM;
-- servicio/posventa;
-- pruebas y pilotos;
-- logística, lead times y capacidad;
-- conflictos de canal;
-- diferencias lingüísticas/culturales.
-
-No importar playbooks SaaS, e-commerce o consumo sin adaptación.
-
-## 14. Gates, approvals y escalado
-
-Un gate puede devolver:
-
-- `PASS`;
-- `PASS_CON_LIMITES`;
-- `REQUIERE_INPUT`;
-- `REQUIERE_EVIDENCIA`;
-- `REQUIERE_VALIDACION_HUMANA`;
-- `BLOCK`.
-
-No validar autónomamente claims técnicos, certificaciones, suitability regulatoria, pricing, descuentos, garantías, exclusividad, contratos ni comunicaciones externas sensibles.
-
-Escalar cuestiones fiscales, legales, regulatorias, aduaneras, financieras sensibles o de ingeniería crítica.
-
-## 15. Tests
-
-Antes de cerrar cambios de arquitectura/código, hacer best effort para ejecutar:
+Tras cambios de código o arquitectura, haz best effort para ejecutar:
 
 ```bash
 python -m py_compile tools/*.py tests/validar_sistema.py skills/sistema-gtm-internacional/scripts/inicializar_contexto.py
 python tests/validar_sistema.py
 ```
 
-GitHub Actions ejecuta estas comprobaciones en push/PR.
+GitHub Actions ejecuta estas comprobaciones en cada push/PR.
 
-## 16. Frontera pública
+## Mapa de documentación
 
-No incorporar por defecto datos de cliente, credenciales, CRM/ERP específicos, monitoring de producción, queues/retries empresariales, secrets management, multi-agent orchestration avanzada, learning loops automáticos ni automatización autónoma de comunicaciones externas.
+- arquitectura → `ARCHITECTURE.md`
+- principios → `docs/principios-del-sistema.md`
+- contexto → `docs/modelo-de-contexto.md`
+- evidencia → `docs/modelo-de-evidencia.md`
+- aprobaciones → `docs/modelo-de-aprobacion.md`
+- contratos → `docs/contratos-compartidos.md`
+- convenciones → `docs/convenciones-de-*.md`
+- agente → `agents/agente-gtm-internacional/AGENT.md`
+- routing/gates → `agents/agente-gtm-internacional/references/`
+- QA → `qa/QUALITY-GUARD.md`
+
+## Frontera pública
+
+No incorpores por defecto datos de cliente, credenciales, CRM/ERP específicos, monitoring de producción, queues/retries empresariales, secrets management, multi-agent orchestration avanzada, learning loops automáticos ni automatización autónoma de comunicaciones externas.
