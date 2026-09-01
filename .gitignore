@@ -1,0 +1,29 @@
+# Contexto real de empresa: nunca versionar por defecto
+company-context/
+
+# Memoria operativa creada durante uso
+memory/decisions/
+memory/hypotheses/
+memory/learnings/
+
+# Credenciales y entornos
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# SO / editores
+.DS_Store
+.idea/
+.vscode/
