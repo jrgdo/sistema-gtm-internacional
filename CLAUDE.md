@@ -12,7 +12,7 @@ Claude Code debe tratar este repositorio como un sistema GTM estructurado, no co
 6. Devuelve el control al Agente GTM Internacional.
 7. Identifica objetivo y decisión.
 8. Aplica routing, gates y camino mínimo.
-9. Usa contratos de `contracts/` para handoffs y resultados.
+9. Usa contratos de `contracts/`.
 10. Ejecuta solo las skills necesarias.
 
 ## Skills activas
@@ -21,38 +21,50 @@ Claude Code debe tratar este repositorio como un sistema GTM estructurado, no co
 - `skills/diagnostico-internacional/`
 - `skills/definicion-icp/`
 - `skills/priorizacion-de-mercados/`
+- `skills/investigacion-de-mercado/`
+- `skills/evaluacion-de-distribuidores/`
 
-Routing:
+Routing principal:
 
 - falta contexto → onboarding;
-- readiness incierto → diagnóstico internacional;
+- readiness incierto → diagnóstico;
 - ICP insuficiente → definición de ICP;
-- comparación de países → priorización de mercados.
+- comparación de países → priorización;
+- evidencia detallada de mercado → investigación de mercado;
+- evaluación de partner identificado → evaluación de distribuidores.
 
-No simules como implementadas skills que `ARCHITECTURE.md` marque como futuras.
+No simules como implementadas skills futuras.
 
-## Uso de archivos y herramientas
+## Research
 
-- razonamiento, interpretación y síntesis → modelo;
-- cálculo, validación, transformación y persistencia repetible → tool/código cuando exista;
-- no uses código para ocultar decisiones metodológicas;
-- no ejecutes acciones externas sensibles sin autorización.
+No producir country reports genéricos cuando la decisión requiera evidence gathering acotado.
 
-## Contexto
+Desk research no equivale a market validation. Separar hechos, señales, inferencias, hipótesis y unknowns. No inferir buyer need o demanda desde señales débiles.
 
-`company-context/` contiene contexto operativo de una empresa concreta. Antes de usarlo, leer `STATUS.md`, comprobar frescura, conflictos y procedencia, y cargar solo los dominios relevantes.
+## Distribuidores
 
-No sobrescribir verdad confirmada con research externo.
+No confundir presencia web, tamaño, portfolio o antigüedad con acceso real, capacidad técnica o prioridad futura.
 
-## Contratos
+Distinguir pre-evaluación de qualification. No recomendar exclusividad ni condiciones sensibles sin aprobación humana.
+
+## Contexto y contratos
+
+`company-context/STATUS.md` es el punto de entrada al contexto.
 
 Toda ejecución sustantiva debe respetar `contracts/README.md` y `docs/contratos-compartidos.md`.
 
-Mantener separados hechos, inferencias, hipótesis, supuestos y desconocidos.
+No sobrescribir verdad confirmada con research externo.
+
+## Herramientas
+
+- modelo → razonamiento, interpretación y síntesis;
+- código/tool → cálculo, validación, transformación y persistencia repetible.
+
+No ejecutar acciones externas sensibles sin autorización.
 
 ## Especialización industrial B2B
 
-Adaptar el análisis a aplicaciones técnicas, ciclos largos, canal, homologación, servicio, capacidad, logística y buying complexity cuando sean materiales. No extrapolar automáticamente frameworks SaaS o consumo.
+Adaptar análisis a aplicaciones técnicas, ciclos largos, canal, homologación, servicio, capacidad, logística y buying complexity cuando sean materiales.
 
 ## Aprobación y escalado
 
@@ -60,18 +72,6 @@ Escalar cuestiones fiscales, legales, regulatorias, aduaneras, financieras sensi
 
 No validar autónomamente claims, certificaciones, pricing, exclusividad, garantías o compromisos contractuales.
 
-## Calidad
-
-Antes de cerrar:
-
-- decisión clara;
-- contexto suficiente;
-- evidencia proporcional;
-- gaps y riesgos visibles;
-- confianza justificada;
-- siguiente acción clara;
-- aprobación humana cuando aplique.
-
 ## Idioma
 
-Trabaja en español por defecto. Puede usar fuentes y producir entregables en otros idiomas cuando el mercado objetivo lo requiera.
+Trabaja en español por defecto. Puede investigar fuentes locales y producir entregables en otros idiomas cuando el mercado lo requiera.
