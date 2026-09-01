@@ -4,119 +4,55 @@ Claude Code debe tratar este repositorio como un sistema GTM estructurado, no co
 
 ## Inicio obligatorio
 
-Antes de realizar trabajo sustantivo:
+1. Lee `AGENTS.md`.
+2. Lee `ARCHITECTURE.md`.
+3. Lee `agents/agente-gtm-internacional/AGENT.md`.
+4. Lee `docs/contratos-compartidos.md`.
+5. Comprueba `company-context/STATUS.md` si existe.
+6. Valida contexto, frescura y conflictos.
+7. Si falta contexto esencial, ejecuta `skills/onboarding-empresa/SKILL.md`.
+8. Devuelve el control al Agente GTM Internacional.
+9. Identifica objetivo y decisión.
+10. Aplica routing, gates y camino mínimo.
+11. Antes de invocar un componente, estructura semánticamente su entrada según `contracts/entrada-componente.yaml`.
+12. Interpreta su resultado según `contracts/salida-componente.yaml`.
+13. Usa `contracts/handoff.yaml` cuando transfieras trabajo entre componentes.
+14. Aplica evidencia, confianza y approval.
+15. Cierra según `contracts/cierre-ejecucion.yaml`.
 
-1. lee `AGENTS.md`;
-2. lee `ARCHITECTURE.md`;
-3. lee `agents/agente-gtm-internacional/AGENT.md`;
-4. carga únicamente la documentación relevante de `docs/`;
-5. comprueba si existe `company-context/STATUS.md`;
-6. si existe, léelo primero y determina qué dominios son relevantes para la decisión;
-7. comprueba estado, frescura y conflictos antes de usar esos dominios;
-8. si falta contexto esencial, ejecuta `skills/onboarding-empresa/SKILL.md`;
-9. tras onboarding o validación de contexto, devuelve el control al Agente GTM Internacional para routing;
-10. selecciona el workflow y las skills mínimas necesarias cuando existan;
-11. utiliza tools deterministas cuando exista una herramienta adecuada;
-12. aplica las reglas de evidencia, aprobación y persistencia antes de cerrar la tarea.
+## Contratos compartidos
 
-## Agente GTM Internacional
+Los YAML de `contracts/` son contratos internos. No es necesario mostrarlos literalmente al usuario.
 
-`agents/agente-gtm-internacional/AGENT.md` es la capa de coordinación.
+No completes campos desconocidos con contenido plausible. Preserva siempre la separación entre hechos, inferencias, hipótesis, supuestos y desconocidos.
 
-Debe decidir:
+Una recomendación no equivale a una decisión aprobada.
 
-- qué decisión o entregable intenta preparar el usuario;
-- qué contexto es material;
-- qué componente usar;
-- qué dependencies deben cumplirse;
-- cuándo avanzar, bloquear o escalar;
-- cuándo solicitar validación humana.
-
-Aplicar siempre el principio de camino mínimo: no ejecutar componentes innecesarios.
-
-Consultar sus referencias de routing, estados, gates, handoffs y límites cuando la ejecución lo requiera.
+La confianza debe seguir `contracts/confianza.yaml`: nunca aumentarla por la calidad de redacción del modelo.
 
 ## Company Context Engine
 
-Las plantillas públicas viven en `templates/contexto-empresa/`. En una implementación concreta, el contexto operativo debe vivir en `company-context/`.
+Las plantillas públicas viven en `templates/contexto-empresa/`; el contexto real de una implementación vive en `company-context/`.
 
-`company-context/STATUS.md` es el índice de salud del contexto. No cargues todos los archivos automáticamente si no son necesarios.
+Lee `STATUS.md` primero y carga solo los dominios relevantes. No sobrescribas información confirmada con research externo y no guardes secretos o credenciales.
 
-Antes de confiar en un dato, comprueba:
+## Primera ejecución
 
-- si está confirmado o es una inferencia;
-- si procede de una fuente autorizada;
-- si sigue vigente para la decisión actual;
-- si existe un conflicto abierto;
-- si requiere aprobación humana.
-
-No sobrescribas información confirmada con investigación externa. Si una nueva fuente contradice el contexto, registra el conflicto y escala según `docs/gestion-de-conflictos.md`.
-
-## Primera ejecución y onboarding
-
-Si no existe una configuración válida de empresa, no generes una estrategia genérica.
-
-Ejecuta `skills/onboarding-empresa/SKILL.md` y sigue este orden:
-
-1. revisar documentos y contexto disponible;
-2. detectar cobertura, gaps, obsolescencia y conflictos;
-3. preguntar solo la información material que falta;
-4. presentar un resumen de validación;
-5. crear o actualizar `company-context/` solo con información permitida;
-6. actualizar `STATUS.md`;
-7. declarar qué trabajo GTM queda habilitado o bloqueado.
-
-No ejecutes onboarding completo si el contexto ya es suficiente para el objetivo actual.
-
-## Routing, gates y stops
-
-Antes de ejecutar una capacidad downstream:
-
-- comprobar prerequisites;
-- no inventar inputs faltantes;
-- permitir `PASS_CON_LIMITES` cuando el gap no sea material;
-- detenerse si existe conflicto, evidencia insuficiente o aprobación obligatoria;
-- escalar a expertise humano especializado cuando la cuestión material sea fiscal, legal, regulatoria, aduanera, financiera sensible o de ingeniería crítica.
-
-Un stop correcto no es un error del sistema.
-
-## Uso del sistema de archivos
-
-Cuando exista contexto local de empresa:
-
-- lee `STATUS.md` antes de los dominios específicos;
-- conserva por separado verdad de empresa, hipótesis e investigación;
-- aplica `docs/politica-de-escritura-de-contexto.md` antes de persistir cambios;
-- aplica `docs/politica-de-frescura.md` cuando la fecha pueda cambiar la decisión;
-- evita guardar datos personales o confidenciales que no sean necesarios;
-- no incluyas credenciales, tokens o secretos en archivos versionados.
+Si no existe contexto válido, ejecuta el onboarding adaptativo. Revisa primero documentación existente, detecta cobertura y gaps, pregunta solo lo necesario, valida y persiste únicamente información permitida.
 
 ## Uso de herramientas
 
-Claude Code puede utilizar filesystem, terminal, búsqueda u otras capacidades autorizadas para ejecutar trabajo verificable.
-
-Principio:
-
 - razonamiento, interpretación y síntesis → modelo;
-- cálculos, validaciones, schemas, transformaciones y operaciones repetibles → código/tool cuando exista.
+- cálculos, schemas, validaciones, persistencia y transformaciones repetibles → código/tool cuando exista.
 
 No ejecutes acciones externas sensibles sin autorización explícita.
 
-## Calidad
+## Especialización industrial B2B
 
-Antes de finalizar un entregable GTM, verifica:
+Adapta el análisis a empresas industriales y exportadoras: aplicación técnica, canal, homologación, servicio, capacidad, logística, lead times, distribuidores, integradores, OEM y ciclos largos cuando sean materiales.
 
-- ¿la decisión está clara?;
-- ¿el contexto utilizado está suficientemente validado y vigente?;
-- ¿se ha utilizado el camino mínimo?;
-- ¿se han respetado prerequisites y gates?;
-- ¿la evidencia respalda la recomendación?;
-- ¿se han señalado gaps, conflictos e hipótesis?;
-- ¿la recomendación está adaptada a industrial B2B cuando corresponde?;
-- ¿hay una siguiente acción concreta?;
-- ¿requiere aprobación humana o expertise especializado?;
-- ¿se ha evitado guardar información no validada como verdad?
+No importes mecánicamente playbooks SaaS o consumo.
 
 ## Idioma
 
-Trabaja en español por defecto dentro de este repositorio. Puedes investigar fuentes en otros idiomas y producir materiales localizados cuando el mercado objetivo lo requiera.
+Trabaja en español por defecto. Puedes investigar fuentes y producir entregables localizados en otros idiomas cuando el mercado lo requiera.
