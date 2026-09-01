@@ -4,8 +4,6 @@
 
 Construir un agente de IA personalizable que ayude a empresas B2B, especialmente industriales y técnicas, a estructurar decisiones de internacionalización, entrada en mercados y desarrollo comercial.
 
-El sistema público debe ser útil por sí mismo y riguroso para trabajo real, sin sustituir una implementación empresarial conectada a CRM, ERP, fuentes de datos y automatización avanzada.
-
 ## 2. Arquitectura lógica
 
 ```text
@@ -34,67 +32,27 @@ PERSISTENCIA VALIDADA
 
 ## 3. Capas
 
-### Instrucciones raíz
-Definen comportamiento y límites.
-
-### Company Context Engine
-Mantiene verdad operativa con estado, procedencia, frescura y conflictos.
-
-### Onboarding
-Configura o actualiza contexto para un objetivo concreto.
-
-### Agente GTM Internacional
-Coordina objetivo, routing, gates, stops y handoffs.
-
-### Contratos compartidos
-`contracts/` define el lenguaje común de entrada, salida, evidencia, decisión, confianza, error, estados y handoffs.
-
-### Skills
-Contienen metodología profesional reutilizable.
-
-### Workflows
-Compondrán varias capacidades en procesos completos en Fase 7.
-
-### Tools
-Ejecutarán cálculos, validaciones y transformaciones deterministas en Fase 8.
+- **Contexto:** verdad operativa con procedencia, estado y frescura.
+- **Onboarding:** configura contexto suficiente para el objetivo.
+- **Agente:** coordina decisión, routing, gates y camino mínimo.
+- **Contratos:** lenguaje común entre componentes.
+- **Skills:** metodología profesional reutilizable.
+- **Workflows:** composición de capacidades en Fase 7.
+- **Tools:** operaciones deterministas en Fase 8.
 
 ## 4. Skills implementadas
 
 ### `onboarding-empresa`
-Construye contexto validado de empresa.
+Configura o actualiza el Company Context Engine.
 
 ### `diagnostico-internacional`
-Evalúa preparación para ejecutar un objetivo internacional concreto.
-
-Marco clave:
-
-```text
-OBJETIVO
-↓
-OFERTA / APLICACIÓN
-↓
-CLIENTE
-↓
-EVIDENCIA
-↓
-CAPACIDAD COMERCIAL / CANAL / SOPORTE / OPERACIONES
-↓
-RESTRICCIONES
-↓
-READINESS + GAPS + CONDICIONES
-```
-
-No confunde oportunidad de mercado con capacidad interna.
+Evalúa readiness interno para un objetivo internacional concreto.
 
 ### `definicion-icp`
-Define qué organizaciones merecen prioridad para una oferta/aplicación.
-
-Debe incluir criterios de inclusión, disqualifiers, señales observables y nivel de evidencia.
-
-No confundir ICP con buying roles.
+Define qué tipo de organización merece prioridad comercial para una oferta y aplicación.
 
 ### `priorizacion-de-mercados`
-Compara países mediante tres bloques separados:
+Compara mercados separando:
 
 ```text
 ATRACTIVO
@@ -104,45 +62,83 @@ CAPACIDAD DE GANAR
 FRICCIÓN / RIESGO
 ```
 
-Los criterios y pesos deben ser explícitos. Unknowns no se convierten automáticamente en scores negativos. El ranking sirve para decidir dónde investigar o validar primero.
+### `investigacion-de-mercado`
+Produce inteligencia externa orientada a una decisión concreta.
 
-## 5. Secuencia estratégica inicial
+Principio:
 
-Cuando la petición requiere toda la cadena y las dependencias lo justifican:
+```text
+DECISIÓN
+↓
+HIPÓTESIS
+↓
+PLAN DE EVIDENCIA
+↓
+FUENTES ADECUADAS
+↓
+HECHOS / INFERENCIAS / UNKNOWNs
+↓
+IMPLICACIÓN GTM
+↓
+SIGUIENTE VALIDACIÓN
+```
+
+Desk research no equivale a market validation.
+
+### `evaluacion-de-distribuidores`
+Evalúa candidatos de canal con evidencia sobre fit, acceso, cobertura, capacidad, conflictos, prioridad y siguiente compromiso.
+
+Distingue:
+
+```text
+DISCOVERY
+≠
+PRE-EVALUACIÓN
+≠
+QUALIFICATION
+≠
+SELECCIÓN / CONTRATACIÓN
+```
+
+La selección contractual final permanece humana.
+
+## 5. Secuencia estratégica
+
+Cuando las dependencias lo justifican:
 
 ```text
 ONBOARDING
-  ↓
-DIAGNÓSTICO INTERNACIONAL
-  ↓
-DEFINICIÓN DE ICP
-  ↓
-PRIORIZACIÓN DE MERCADOS
+↓
+DIAGNÓSTICO
+↓
+ICP
+↓
+PRIORIZACIÓN
+↓
+INVESTIGACIÓN DE MERCADO
+↓
+EVALUACIÓN DE CANAL / PARTNERS
 ```
 
-Pero el Agente GTM debe aplicar camino mínimo. No ejecutar toda la cadena cuando una sola skill basta.
+El agente debe aplicar camino mínimo; esta cadena no es obligatoria en todas las ejecuciones.
 
-## 6. Company Context Engine
+## 6. Research loop
 
-Las plantillas públicas viven en `templates/contexto-empresa/`; los datos de una empresa concreta viven localmente en `company-context/`.
+Loop permitido:
 
-`STATUS.md` es el punto de entrada obligatorio.
+```text
+PRIORIZACIÓN
+→ gap de evidencia
+→ INVESTIGACIÓN DE MERCADO
+→ nueva evidencia
+→ REPRIORIZACIÓN
+```
+
+Solo repetir si cambia la evidencia o el estado.
 
 ## 7. Contratos compartidos
 
-Todo componente futuro debe ser compatible con:
-
-- `contracts/entrada-componente.yaml`;
-- `contracts/salida-componente.yaml`;
-- `contracts/handoff.yaml`;
-- `contracts/evidencia.yaml`;
-- `contracts/decision.yaml`;
-- `contracts/confianza.yaml`;
-- `contracts/error-operativo.yaml`;
-- `contracts/estados.yaml`;
-- `contracts/cierre-ejecucion.yaml`.
-
-Los contratos son semántica interna; no obligan a mostrar YAML al usuario.
+Todo componente debe ser compatible con `contracts/` y mantener separados hechos, inferencias, hipótesis, supuestos, desconocidos, evidencia, confianza y decisión.
 
 ## 8. Routing activo
 
@@ -150,57 +146,27 @@ Los contratos son semántica interna; no obligan a mostrar YAML al usuario.
 - readiness incierto → `diagnostico-internacional`;
 - ICP insuficiente → `definicion-icp`;
 - comparación de países → `priorizacion-de-mercados`;
-- investigación detallada de mercado → futura `investigacion-de-mercado`;
-- partner → futura `evaluacion-de-distribuidores`;
+- evidencia detallada de mercado → `investigacion-de-mercado`;
+- partner identificado → `evaluacion-de-distribuidores`;
 - cuenta → futura `investigacion-de-cuentas`;
 - reunión/acción → futura `preparacion-comercial`.
 
-## 9. Principio WAT
+## 9. Frontera pública
 
-- Workflow: proceso operativo.
-- Agent: coordinación y juicio contextual.
-- Tool: ejecución determinista.
-- Skills: metodología especializada reutilizable.
+El repositorio incluye metodología, contexto local, research asistido, evaluación transparente y aprobación humana.
 
-## 10. Frontera pública
+Quedan fuera del alcance base integraciones de producción, CRM/ERP, monitoring continuo, enrichment industrializado, secrets management, multi-agent orchestration avanzada, automatización de comunicaciones y learning loops automáticos.
 
-### Público
+## 10. Evolución por fases
 
-- contexto y onboarding;
-- agente coordinador;
-- contratos;
-- skills GTM seleccionadas;
-- workflows asistidos futuros;
-- scorecards transparentes;
-- tools locales sencillas;
-- aprobación humana.
-
-### Fuera del alcance base
-
-- CRM/ERP de producción;
-- monitoring continuo;
-- scraping/enrichment industrializado;
-- queues/retries/observabilidad;
-- secrets management;
-- multi-agent orchestration avanzada;
-- permisos empresariales;
-- learning loops automáticos;
-- automatización de comunicaciones externas.
-
-## 11. Criterios de calidad
-
-Una nueva capacidad solo se añade cuando tiene responsabilidad diferenciada, contrato claro, dependencias, evaluación, evidencia, límites y compatibilidad con el agente y los contratos.
-
-## 12. Evolución por fases
-
-- Fase 1: constitución y convenciones — completada.
+- Fase 1: constitución — completada.
 - Fase 2: Company Context Engine — completada.
 - Fase 3: onboarding — completada.
 - Fase 4: agente coordinador — completada.
-- Fase 5: contratos compartidos — completada.
-- Fase 6A: diagnóstico internacional, ICP y priorización de mercados — completada.
-- Fase 6B: investigación de mercado y distribuidores — siguiente sprint.
-- Fase 6C: investigación de cuentas y preparación comercial — posterior.
+- Fase 5: contratos — completada.
+- Fase 6A: diagnóstico, ICP y priorización — completada.
+- Fase 6B: investigación de mercado y distribuidores — completada.
+- Fase 6C: investigación de cuentas y preparación comercial — siguiente sprint.
 - Fase 7: workflows.
 - Fase 8: tools deterministas.
 - Fase 9+: memoria, QA, evaluaciones ejecutables, instalación y ejemplos.
