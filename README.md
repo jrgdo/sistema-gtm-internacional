@@ -8,9 +8,9 @@ Pensado especialmente para empresas industriales españolas que empiezan a expor
 
 [![skills.sh](https://skills.sh/b/jrgdo/sistema-gtm-internacional)](https://skills.sh/jrgdo/sistema-gtm-internacional)
 
-## Qué diferencia este repositorio de un pack de prompts
+## Qué es
 
-No parte de una instrucción genérica tipo “actúa como experto en exportación”. El sistema combina:
+No es un pack de prompts ni una instrucción genérica de “actúa como experto en exportación”. Es una implementación de referencia para convertir trabajo GTM internacional en un sistema con contexto, decisiones, procesos, capacidades especializadas, operaciones deterministas y revisión humana.
 
 ```text
 CONTEXTO DE EMPRESA
@@ -25,30 +25,40 @@ SKILLS ESPECIALIZADAS
         ↓
 TOOLS DETERMINISTAS
         ↓
-QUALITY GUARD
+CONTROL DE CALIDAD
         ↓
 DECISIÓN HUMANA
         ↓
 MEMORIA VALIDADA
 ```
 
-La arquitectura separa razonamiento probabilístico de operaciones deterministas, distingue evidencia de hipótesis y sabe cuándo debe detenerse o escalar.
+La arquitectura separa razonamiento probabilístico de operaciones deterministas, distingue evidencia de hipótesis y sabe cuándo debe continuar, detenerse o escalar.
 
-## Instalación rápida
+## Dos formas de usarlo
 
-Con Agent Skills:
+### 1. Modo Skills — instalación rápida
+
+Recomendado si quieres utilizar las capacidades GTM desde un agente compatible sin clonar toda la arquitectura.
+
+**Codex**
+
+```bash
+npx skills add jrgdo/sistema-gtm-internacional --skill '*' --agent codex
+```
+
+**Claude Code**
+
+```bash
+npx skills add jrgdo/sistema-gtm-internacional --skill '*' --agent claude-code
+```
+
+También puedes ejecutar el instalador interactivo:
 
 ```bash
 npx skills add jrgdo/sistema-gtm-internacional
 ```
 
-Para instalar todas las skills en agentes compatibles detectados:
-
-```bash
-npx skills add jrgdo/sistema-gtm-internacional --all
-```
-
-Después:
+Después, inicia con una petición como:
 
 ```text
 Configura el Sistema GTM Internacional para mi empresa.
@@ -56,37 +66,51 @@ Trabaja en español.
 No inventes información que no esté confirmada.
 ```
 
-Consulta [`EMPIEZA-AQUI.md`](EMPIEZA-AQUI.md) y [`docs/instalacion.md`](docs/instalacion.md).
+La skill `sistema-gtm-internacional` actúa como punto de entrada y puede inicializar un `company-context/` local sin inventar datos.
 
-## Repositorio completo
+> El modo Skills distribuye las skills y sus archivos asociados. No equivale a clonar toda la arquitectura del repositorio.
 
-Si quieres estudiar, modificar o extender la arquitectura:
+### 2. Repositorio completo — arquitectura de referencia
+
+Recomendado si quieres estudiar, modificar, extender o evaluar el sistema completo:
 
 ```bash
 git clone https://github.com/jrgdo/sistema-gtm-internacional.git
 cd sistema-gtm-internacional
 ```
 
-La instalación por Skills distribuye las carpetas de skills. El clone completo incluye además agente, workflows, contracts, tools, QA, tests, templates y documentación de arquitectura.
+El repositorio completo incluye además:
 
-## Capacidades
+- `AGENTS.md`, `CLAUDE.md` y `CODEX.md`;
+- Agente GTM Internacional;
+- workflows;
+- contratos compartidos;
+- tools Python;
+- Quality Guard;
+- tests y CI;
+- templates;
+- documentación de arquitectura y governance.
+
+Consulta [`EMPIEZA-AQUI.md`](EMPIEZA-AQUI.md) y [`docs/instalacion.md`](docs/instalacion.md).
+
+## Capacidades incluidas
 
 ### Configuración y estrategia
 
-- `sistema-gtm-internacional` — punto de entrada y orquestación instalable.
-- `onboarding-empresa` — configura contexto de empresa sin rellenar huecos con IA.
-- `diagnostico-internacional` — evalúa readiness para una ambición concreta.
+- `sistema-gtm-internacional` — punto de entrada instalable y routing básico.
+- `onboarding-empresa` — configura contexto sin rellenar huecos con IA.
+- `diagnostico-internacional` — evalúa preparación para una ambición concreta.
 - `definicion-icp` — define qué organizaciones merecen prioridad.
 - `priorizacion-de-mercados` — compara atractivo, capacidad de ganar y fricción.
 
-### Inteligencia comercial
+### Inteligencia y preparación comercial
 
 - `investigacion-de-mercado` — investigación ligada a una decisión, no country reports genéricos.
 - `evaluacion-de-distribuidores` — fit, acceso, capacidad, conflictos, prioridad y siguiente validación.
 - `investigacion-de-cuentas` — account fit, señales, hipótesis y stakeholders probables.
 - `preparacion-comercial` — briefing, discovery, riesgos y siguiente compromiso.
 
-## Workflows incluidos
+## Workflows del repositorio completo
 
 - configurar agente;
 - diagnosticar expansión;
@@ -96,7 +120,7 @@ La instalación por Skills distribuye las carpetas de skills. El clone completo 
 - investigar cuenta;
 - preparar reunión.
 
-Cada workflow declara precondiciones, gates, stops y handoffs.
+Cada workflow declara precondiciones, gates, stops y handoffs. La metodología especializada permanece en las skills para evitar duplicación.
 
 ## Ejemplos de uso
 
@@ -113,19 +137,19 @@ Cada workflow declara precondiciones, gates, stops y handoffs.
 ## Principios de calidad
 
 - hechos, evidencia, inferencias, hipótesis, supuestos y desconocidos permanecen separados;
-- research no equivale a customer discovery;
-- unknown no equivale automáticamente a cero;
+- investigación de escritorio no equivale a customer discovery;
+- desconocido no equivale automáticamente a cero;
 - una buena web no demuestra acceso comercial de un distribuidor;
 - un cargo no demuestra autoridad de compra;
-- un ranking no sustituye decisión humana;
+- un ranking no sustituye una decisión humana;
 - claims, certificaciones, pricing, exclusividad y compromisos sensibles requieren governance;
 - si la cuestión es fiscal, legal, regulatoria o de ingeniería crítica, el sistema prepara y escala: no finge autoridad profesional.
 
 ## Company Context Engine
 
-El sistema crea un `company-context/` local para almacenar únicamente contexto operativo validado. `.gitignore` excluye esa carpeta por defecto para reducir el riesgo de publicar información interna.
+El sistema utiliza `company-context/` para almacenar contexto operativo validado de una empresa concreta. En el repositorio completo, `.gitignore` excluye esta carpeta por defecto para reducir el riesgo de publicar información interna.
 
-La memoria se mantiene separada:
+La memoria se mantiene separada en tres categorías conceptuales:
 
 - decisiones;
 - hipótesis;
@@ -133,29 +157,28 @@ La memoria se mantiene separada:
 
 Una observación comercial no reescribe automáticamente la verdad de empresa.
 
-## Código y validación
+## Código, tests y CI
 
-El repositorio incluye tools Python para:
+El repositorio completo incluye tools Python para:
 
 - validar estructura de contexto;
 - calcular scorecards transparentes;
 - registrar decisiones;
 - validar contratos.
 
-GitHub Actions comprueba sintaxis y estructura base en cada push/PR.
+GitHub Actions comprueba sintaxis y estructura base en cada push/PR. Las reglas del Quality Guard añaden controles sobre evidencia, desconocidos, confianza, claims y aprobaciones.
 
 ## Qué NO pretende resolver la versión pública
 
 No incluye por defecto una arquitectura empresarial completa para:
 
-- CRM/ERP sync;
-- monitoring continuo;
-- enrichment masivo;
-- triggers y queues;
-- secrets management;
-- retries y observabilidad;
-- permisos empresariales;
-- multi-agent orchestration avanzada;
+- sincronización CRM/ERP;
+- monitorización continua;
+- enriquecimiento masivo de datos;
+- triggers, colas y retries de producción;
+- gestión empresarial de secretos;
+- permisos y observabilidad de producción;
+- orquestación multiagente avanzada;
 - learning loops automáticos;
 - automatización autónoma de comunicaciones externas.
 
@@ -173,11 +196,22 @@ Puedes usar el [`autodiagnóstico de madurez`](docs/autodiagnostico-de-madurez.m
 
 `examples/empresa-industrial-ficticia/` muestra cómo aplicar el sistema sin utilizar datos ni resultados de clientes reales.
 
-## Contribuir
+## Para builders y contribuidores
 
-Consulta [`CONTRIBUTING.md`](CONTRIBUTING.md). Las propuestas de nuevas skills deben explicar la decisión soportada, inputs, output, errores frecuentes y qué debe seguir siendo decisión humana.
+Empieza por:
+
+1. `AGENTS.md` — mapa operativo canónico.
+2. `ARCHITECTURE.md` — arquitectura y fronteras.
+3. `agents/agente-gtm-internacional/AGENT.md` — lógica de coordinación.
+4. `docs/convenciones-de-skills.md`, `docs/convenciones-de-workflows.md` y `docs/convenciones-de-tools.md` — reglas de extensión.
+
+Consulta también [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 Si el proyecto te resulta útil, una ⭐ ayuda a que otros equipos de exportación e industrial B2B lo encuentren.
+
+## Estado de release
+
+La arquitectura pública está implementada y validada por CI. Antes de etiquetar una versión estable conviene completar una prueba limpia end-to-end en Codex y Claude Code y seleccionar una licencia pública explícita.
 
 ## Idioma
 
