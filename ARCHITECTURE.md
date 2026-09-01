@@ -15,6 +15,8 @@ AGENTS.md + CLAUDE.md / CODEX.md
   ↓
 COMPANY CONTEXT ENGINE
   ↓
+ONBOARDING-EMPRESA CUANDO SEA NECESARIO
+  ↓
 AGENTE GTM INTERNACIONAL
   ↓
 VALIDACIÓN DE CONTEXTO
@@ -39,6 +41,9 @@ Definen cómo debe comportarse cualquier asistente que opere el repositorio.
 
 ### Company Context Engine
 Mantiene contexto operativo de empresa con estados, procedencia, frescura, conflictos y reglas de actualización. No es una memoria indiscriminada del modelo.
+
+### Onboarding de empresa
+Convierte información proporcionada, documentación y contexto existente en una configuración GTM estructurada y validada para un objetivo concreto. No crea estrategia por defecto ni rellena huecos mediante inferencias.
 
 ### Agente
 Decide qué proceso ejecutar, qué información falta, qué skill necesita y cuándo detenerse o pedir validación.
@@ -126,7 +131,55 @@ Las políticas están documentadas en:
 - `docs/politica-de-frescura.md`;
 - `docs/gestion-de-conflictos.md`.
 
-## 5. Principio WAT aplicado
+## 5. Skill de onboarding de empresa
+
+La primera skill implementada y referencia inicial de calidad es:
+
+`skills/onboarding-empresa/SKILL.md`
+
+### 5.1 Responsabilidad
+
+Determinar si existe contexto suficiente para un objetivo GTM y, cuando no exista, construirlo mediante:
+
+1. inspección del contexto y documentos disponibles;
+2. extracción de afirmaciones soportadas;
+3. mapa de cobertura por dominio;
+4. preguntas adaptativas sobre gaps materiales;
+5. detección de conflictos y obsolescencia;
+6. validación humana de elementos relevantes;
+7. persistencia controlada en `company-context/`;
+8. declaración de readiness y siguiente handoff.
+
+### 5.2 Resultados operativos
+
+La skill puede terminar en:
+
+- `CONTEXTO_VALIDADO_PARA_OBJETIVO`;
+- `CONTEXTO_PARCIAL_UTILIZABLE`;
+- `REQUIERE_VALIDACION`;
+- `CONFLICTO_MATERIAL`;
+- `INPUT_INSUFICIENTE`.
+
+### 5.3 Principio de suficiencia
+
+El onboarding se valida para un objetivo, no por porcentaje de plantillas completadas.
+
+Un contexto parcial puede ser suficiente para una investigación concreta. Un contexto aparentemente completo puede ser insuficiente para una decisión sensible si faltan restricciones, aprobación o información vigente.
+
+### 5.4 Referencias y evaluación
+
+La metodología especializada vive en:
+
+- `skills/onboarding-empresa/references/preguntas-onboarding.md`;
+- `skills/onboarding-empresa/references/extraccion-de-documentos.md`;
+- `skills/onboarding-empresa/references/validacion-de-contexto.md`.
+
+La skill se evalúa con:
+
+- `skills/onboarding-empresa/tests/escenarios.md`;
+- `skills/onboarding-empresa/tests/criterios-de-evaluacion.md`.
+
+## 6. Principio WAT aplicado
 
 La arquitectura adopta el patrón conceptual Workflows–Agents–Tools sin convertir el acrónimo en la propuesta de valor.
 
@@ -136,12 +189,12 @@ La arquitectura adopta el patrón conceptual Workflows–Agents–Tools sin conv
 
 Las skills complementan este patrón como módulos metodológicos especializados.
 
-## 6. Frontera público / implementación profesional
+## 7. Frontera público / implementación profesional
 
 ### Público
 
 - plantillas de contexto;
-- onboarding manual en fases posteriores;
+- onboarding manual/adaptativo;
 - contexto local;
 - skills GTM seleccionadas;
 - workflows manuales/asistidos;
@@ -163,7 +216,7 @@ Las skills complementan este patrón como módulos metodológicos especializados
 - learning loops automáticos;
 - automatización de comunicaciones externas.
 
-## 7. Dependencias y routing
+## 8. Dependencias y routing
 
 El sistema debe preferir el menor conjunto de componentes capaz de resolver correctamente la decisión.
 
@@ -178,7 +231,9 @@ Ejemplos:
 
 Un contexto incompleto no bloquea automáticamente toda tarea: bloquea o reduce confianza únicamente cuando falta información material para la decisión concreta.
 
-## 8. Modelo de estado del sistema
+Cuando el contexto sea el bloqueo, enrutar primero a `onboarding-empresa`.
+
+## 9. Modelo de estado del sistema
 
 Las futuras ejecuciones deben poder distinguir al menos:
 
@@ -191,9 +246,9 @@ Las futuras ejecuciones deben poder distinguir al menos:
 - `LISTO_PARA_DECISION`;
 - `CERRADO`.
 
-Los estados exactos de ejecución se formalizarán en fases posteriores. No confundir estos estados de ejecución con los estados de los dominios de contexto.
+Los estados exactos de ejecución se formalizarán en fases posteriores. No confundir estos estados de ejecución con los estados de los dominios de contexto ni con los resultados propios de una skill.
 
-## 9. Criterios de calidad de arquitectura
+## 10. Criterios de calidad de arquitectura
 
 Una nueva capacidad solo se añade cuando:
 
@@ -207,16 +262,18 @@ Una nueva capacidad solo se añade cuando:
 8. mantiene separada la lógica pública de una implementación privada de producción;
 9. respeta las políticas del Company Context Engine.
 
-## 10. Evolución por fases
+`skills/onboarding-empresa/` sirve como referencia inicial del nivel de especificación esperado, pero no debe copiarse mecánicamente cuando otra skill requiera una metodología diferente.
+
+## 11. Evolución por fases
 
 - **Fase 1:** constitución, arquitectura y convenciones. Completada.
-- **Fase 2:** modelo y plantillas de contexto de empresa. Completada a nivel de arquitectura y templates.
-- **Fase 3:** skill de onboarding.
+- **Fase 2:** modelo y plantillas de contexto de empresa. Completada.
+- **Fase 3:** skill de onboarding. Completada a nivel de metodología, referencias y evaluación documental.
 - **Fase 4:** agente GTM internacional.
 - **Fase 5:** contratos compartidos.
 - **Fase 6:** skills especializadas.
 - **Fase 7:** workflows.
 - **Fase 8:** tools deterministas.
-- **Fase 9+:** memoria, QA, evaluaciones, instalación y ejemplos.
+- **Fase 9+:** memoria, QA, evaluaciones ejecutables, instalación y ejemplos.
 
 No adelantar fases si las dependencias arquitectónicas no están cerradas.
