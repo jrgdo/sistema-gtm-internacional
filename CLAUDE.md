@@ -8,15 +8,33 @@ Antes de realizar trabajo sustantivo:
 
 1. lee `AGENTS.md`;
 2. lee `ARCHITECTURE.md`;
-3. carga únicamente la documentación relevante de `docs/`;
-4. comprueba si existe `company-context/STATUS.md`;
-5. si existe, léelo primero y determina qué dominios son relevantes para la decisión;
-6. comprueba estado, frescura y conflictos antes de usar esos dominios;
-7. si falta contexto esencial, ejecuta `skills/onboarding-empresa/SKILL.md`;
-8. identifica el objetivo y la decisión comercial;
-9. selecciona el workflow y las skills mínimas necesarias cuando existan;
-10. utiliza tools deterministas cuando exista una herramienta adecuada;
-11. aplica las reglas de evidencia, aprobación y persistencia antes de cerrar la tarea.
+3. lee `agents/agente-gtm-internacional/AGENT.md`;
+4. carga únicamente la documentación relevante de `docs/`;
+5. comprueba si existe `company-context/STATUS.md`;
+6. si existe, léelo primero y determina qué dominios son relevantes para la decisión;
+7. comprueba estado, frescura y conflictos antes de usar esos dominios;
+8. si falta contexto esencial, ejecuta `skills/onboarding-empresa/SKILL.md`;
+9. tras onboarding o validación de contexto, devuelve el control al Agente GTM Internacional para routing;
+10. selecciona el workflow y las skills mínimas necesarias cuando existan;
+11. utiliza tools deterministas cuando exista una herramienta adecuada;
+12. aplica las reglas de evidencia, aprobación y persistencia antes de cerrar la tarea.
+
+## Agente GTM Internacional
+
+`agents/agente-gtm-internacional/AGENT.md` es la capa de coordinación.
+
+Debe decidir:
+
+- qué decisión o entregable intenta preparar el usuario;
+- qué contexto es material;
+- qué componente usar;
+- qué dependencies deben cumplirse;
+- cuándo avanzar, bloquear o escalar;
+- cuándo solicitar validación humana.
+
+Aplicar siempre el principio de camino mínimo: no ejecutar componentes innecesarios.
+
+Consultar sus referencias de routing, estados, gates, handoffs y límites cuando la ejecución lo requiera.
 
 ## Company Context Engine
 
@@ -50,6 +68,18 @@ Ejecuta `skills/onboarding-empresa/SKILL.md` y sigue este orden:
 
 No ejecutes onboarding completo si el contexto ya es suficiente para el objetivo actual.
 
+## Routing, gates y stops
+
+Antes de ejecutar una capacidad downstream:
+
+- comprobar prerequisites;
+- no inventar inputs faltantes;
+- permitir `PASS_CON_LIMITES` cuando el gap no sea material;
+- detenerse si existe conflicto, evidencia insuficiente o aprobación obligatoria;
+- escalar a expertise humano especializado cuando la cuestión material sea fiscal, legal, regulatoria, aduanera, financiera sensible o de ingeniería crítica.
+
+Un stop correcto no es un error del sistema.
+
 ## Uso del sistema de archivos
 
 Cuando exista contexto local de empresa:
@@ -78,11 +108,13 @@ Antes de finalizar un entregable GTM, verifica:
 
 - ¿la decisión está clara?;
 - ¿el contexto utilizado está suficientemente validado y vigente?;
+- ¿se ha utilizado el camino mínimo?;
+- ¿se han respetado prerequisites y gates?;
 - ¿la evidencia respalda la recomendación?;
 - ¿se han señalado gaps, conflictos e hipótesis?;
 - ¿la recomendación está adaptada a industrial B2B cuando corresponde?;
 - ¿hay una siguiente acción concreta?;
-- ¿requiere aprobación humana?;
+- ¿requiere aprobación humana o expertise especializado?;
 - ¿se ha evitado guardar información no validada como verdad?
 
 ## Idioma
