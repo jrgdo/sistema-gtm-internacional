@@ -19,7 +19,7 @@ ONBOARDING-EMPRESA CUANDO SEA NECESARIO
   ↓
 AGENTE GTM INTERNACIONAL
   ↓
-VALIDACIÓN DE CONTEXTO
+ROUTING + ESTADOS + GATES + HANDOFFS
   ↓
 WORKFLOW
   ↓
@@ -45,8 +45,10 @@ Mantiene contexto operativo de empresa con estados, procedencia, frescura, confl
 ### Onboarding de empresa
 Convierte información proporcionada, documentación y contexto existente en una configuración GTM estructurada y validada para un objetivo concreto. No crea estrategia por defecto ni rellena huecos mediante inferencias.
 
-### Agente
-Decide qué proceso ejecutar, qué información falta, qué skill necesita y cuándo detenerse o pedir validación.
+### Agente GTM Internacional
+Coordina el sistema. Identifica la decisión, comprueba contexto y dependencias, selecciona el camino mínimo, aplica gates y stops, gestiona handoffs y determina cuándo continuar, bloquear o escalar.
+
+No debe duplicar la metodología que corresponde a skills especializadas.
 
 ### Workflow
 Define la secuencia operativa y los gates de una tarea completa.
@@ -62,13 +64,9 @@ Conserva decisiones, hipótesis y aprendizajes con estado y trazabilidad adecuad
 
 ## 4. Company Context Engine
 
-Las plantillas públicas del motor viven en:
+Las plantillas públicas del motor viven en `templates/contexto-empresa/`.
 
-`templates/contexto-empresa/`
-
-Una implementación concreta deberá crear un workspace local equivalente en:
-
-`company-context/`
+Una implementación concreta deberá crear un workspace local equivalente en `company-context/`.
 
 Ese workspace no forma parte del repositorio público con datos reales de cliente.
 
@@ -76,32 +74,11 @@ Ese workspace no forma parte del repositorio público con datos reales de client
 
 `company-context/STATUS.md` debe leerse antes de cualquier trabajo GTM sustantivo.
 
-Resume:
-
-- estado general;
-- cobertura por dominio;
-- última revisión;
-- gaps materiales;
-- conflictos abiertos;
-- información que requiere actualización.
+Resume estado general, cobertura por dominio, última revisión, gaps materiales, conflictos abiertos e información que requiere actualización.
 
 ### 4.2 Dominios
 
-El modelo inicial contempla:
-
-- empresa;
-- productos y servicios;
-- aplicaciones;
-- ICP y clientes;
-- mercados;
-- estrategia;
-- objetivo actual;
-- ventas y canales;
-- restricciones;
-- aprobaciones;
-- claims aprobados;
-- marca y voz;
-- terminología.
+El modelo inicial contempla empresa, productos y servicios, aplicaciones, ICP y clientes, mercados, estrategia, objetivo actual, ventas y canales, restricciones, aprobaciones, claims aprobados, marca y voz, y terminología.
 
 El agente debe cargar solo los dominios relevantes para la decisión.
 
@@ -113,46 +90,27 @@ El agente debe cargar solo los dominios relevantes para la decisión.
 - `OBSOLETO`;
 - `CONFLICTO`.
 
-Estos estados resumen la salud de un dominio y no sustituyen la clasificación conceptual de cada afirmación como confirmada, inferida, hipótesis, pendiente de validación, obsoleta o conflictiva.
+Estos estados resumen la salud de un dominio y no sustituyen la clasificación conceptual de cada afirmación.
 
 ### 4.4 Principios de persistencia
 
 - No convertir investigación externa en verdad interna sin validación.
 - No sobrescribir silenciosamente información confirmada.
-- Tratar frescura según naturaleza del dato y decisión, no con una caducidad universal.
+- Tratar frescura según naturaleza del dato y decisión.
 - Hacer visibles contradicciones materiales.
 - Minimizar datos y no almacenar secretos.
-- Mantener la marca y voz separadas de hechos técnicos y estratégicos.
+- Mantener marca y voz separadas de hechos técnicos y estratégicos.
 - Mantener el objetivo actual separado de verdad estable de empresa.
-
-Las políticas están documentadas en:
-
-- `docs/politica-de-escritura-de-contexto.md`;
-- `docs/politica-de-frescura.md`;
-- `docs/gestion-de-conflictos.md`.
 
 ## 5. Skill de onboarding de empresa
 
-La primera skill implementada y referencia inicial de calidad es:
-
-`skills/onboarding-empresa/SKILL.md`
+La primera skill implementada y referencia inicial de calidad es `skills/onboarding-empresa/SKILL.md`.
 
 ### 5.1 Responsabilidad
 
-Determinar si existe contexto suficiente para un objetivo GTM y, cuando no exista, construirlo mediante:
-
-1. inspección del contexto y documentos disponibles;
-2. extracción de afirmaciones soportadas;
-3. mapa de cobertura por dominio;
-4. preguntas adaptativas sobre gaps materiales;
-5. detección de conflictos y obsolescencia;
-6. validación humana de elementos relevantes;
-7. persistencia controlada en `company-context/`;
-8. declaración de readiness y siguiente handoff.
+Determinar si existe contexto suficiente para un objetivo GTM y, cuando no exista, construirlo mediante inspección documental, extracción de afirmaciones soportadas, preguntas adaptativas, detección de conflictos, validación humana y persistencia controlada.
 
 ### 5.2 Resultados operativos
-
-La skill puede terminar en:
 
 - `CONTEXTO_VALIDADO_PARA_OBJETIVO`;
 - `CONTEXTO_PARCIAL_UTILIZABLE`;
@@ -164,22 +122,113 @@ La skill puede terminar en:
 
 El onboarding se valida para un objetivo, no por porcentaje de plantillas completadas.
 
-Un contexto parcial puede ser suficiente para una investigación concreta. Un contexto aparentemente completo puede ser insuficiente para una decisión sensible si faltan restricciones, aprobación o información vigente.
+## 6. Agente GTM Internacional
 
-### 5.4 Referencias y evaluación
+El coordinador oficial vive en `agents/agente-gtm-internacional/AGENT.md`.
 
-La metodología especializada vive en:
+### 6.1 Responsabilidad
 
-- `skills/onboarding-empresa/references/preguntas-onboarding.md`;
-- `skills/onboarding-empresa/references/extraccion-de-documentos.md`;
-- `skills/onboarding-empresa/references/validacion-de-contexto.md`.
+Debe poder responder correctamente:
 
-La skill se evalúa con:
+> ¿Qué debe hacerse ahora, qué no debe hacerse todavía y por qué?
 
-- `skills/onboarding-empresa/tests/escenarios.md`;
-- `skills/onboarding-empresa/tests/criterios-de-evaluacion.md`.
+Su secuencia conceptual es:
 
-## 6. Principio WAT aplicado
+```text
+PETICIÓN
+  ↓
+IDENTIFICAR OBJETIVO / DECISIÓN
+  ↓
+VALIDAR CONTEXTO
+  ↓
+COMPROBAR DEPENDENCIAS
+  ↓
+ROUTING
+  ↓
+GATES
+  ↓
+WORKFLOW / SKILL / TOOL
+  ↓
+INTERPRETAR RESULTADO
+  ↓
+CONTINUAR / BLOQUEAR / ESCALAR / CERRAR
+```
+
+### 6.2 Estados operativos
+
+- `SIN_CONFIGURAR`;
+- `CONTEXTUALIZANDO`;
+- `CONTEXTO_PARCIAL`;
+- `LISTO_PARA_ROUTING`;
+- `REQUIERE_CLARIFICACION`;
+- `REQUIERE_EVIDENCIA`;
+- `EN_EJECUCION`;
+- `REQUIERE_VALIDACION_HUMANA`;
+- `LISTO_PARA_DECISION`;
+- `BLOQUEADO`;
+- `CERRADO`.
+
+No confundir estos estados con los estados de contexto ni con los resultados propios de cada skill.
+
+### 6.3 Routing
+
+El routing se basa en objetivo, decisión, contexto y dependencias, no únicamente en palabras clave.
+
+Si no existe workflow formalizado, el agente puede invocar una skill directa cuando ésta resuelva correctamente el trabajo. Si tampoco existe capacidad formalizada, no debe simular que existe.
+
+### 6.4 Camino mínimo
+
+**Ejecutar el menor conjunto de componentes capaz de resolver correctamente la decisión.**
+
+La sobreorquestación se considera un fallo de arquitectura.
+
+### 6.5 Gates
+
+Antes de avanzar downstream, comprobar prerequisites específicos.
+
+Un gate puede devolver:
+
+- `PASS`;
+- `PASS_CON_LIMITES`;
+- `REQUIERE_INPUT`;
+- `REQUIERE_EVIDENCIA`;
+- `REQUIERE_VALIDACION_HUMANA`;
+- `BLOCK`.
+
+### 6.6 Stops
+
+Un stop puede ser la respuesta profesional correcta. El sistema debe detenerse ante contexto bloqueante, conflictos materiales, evidencia insuficiente, falta de aprobación o cuestiones fuera de su autoridad.
+
+### 6.7 Handoffs
+
+Los handoffs deben transportar la decisión, contexto relevante, restricciones, gaps, evidencia y criterio de finalización. En Fase 5 se formalizarán schemas compartidos.
+
+### 6.8 Loops
+
+Solo repetir componentes cuando exista nueva evidencia o cambio material de estado. Si no hay progreso, detener y revisar routing o escalar.
+
+### 6.9 Escalado profesional
+
+El agente debe escalar cuando la cuestión material exija expertise fiscal, legal, regulatorio, aduanero, financiero sensible o de ingeniería crítica.
+
+Puede preparar un briefing útil, pero no sustituir a ese especialista.
+
+### 6.10 Referencias y evaluación
+
+Metodología de orquestación:
+
+- `agents/agente-gtm-internacional/references/routing.md`;
+- `agents/agente-gtm-internacional/references/estados.md`;
+- `agents/agente-gtm-internacional/references/gates-de-decision.md`;
+- `agents/agente-gtm-internacional/references/politica-de-handoffs.md`;
+- `agents/agente-gtm-internacional/references/limites-operativos.md`.
+
+Evaluación:
+
+- `agents/agente-gtm-internacional/tests/escenarios.md`;
+- `agents/agente-gtm-internacional/tests/criterios-de-evaluacion.md`.
+
+## 7. Principio WAT aplicado
 
 La arquitectura adopta el patrón conceptual Workflows–Agents–Tools sin convertir el acrónimo en la propuesta de valor.
 
@@ -189,12 +238,13 @@ La arquitectura adopta el patrón conceptual Workflows–Agents–Tools sin conv
 
 Las skills complementan este patrón como módulos metodológicos especializados.
 
-## 7. Frontera público / implementación profesional
+## 8. Frontera público / implementación profesional
 
 ### Público
 
 - plantillas de contexto;
 - onboarding manual/adaptativo;
+- agente coordinador;
 - contexto local;
 - skills GTM seleccionadas;
 - workflows manuales/asistidos;
@@ -216,37 +266,15 @@ Las skills complementan este patrón como módulos metodológicos especializados
 - learning loops automáticos;
 - automatización de comunicaciones externas.
 
-## 8. Dependencias y routing
+## 9. Dependencias y routing
 
 El sistema debe preferir el menor conjunto de componentes capaz de resolver correctamente la decisión.
 
 No se permite construir un entregable downstream si faltan fundamentos upstream materiales.
 
-Ejemplos:
-
-- no priorizar mercados sin comprender oferta, ICP y restricciones mínimas;
-- no evaluar un distribuidor sin definir qué partner necesita la empresa;
-- no redactar un approach comercial sin comprender cuenta, objetivo y valor relevante;
-- no concluir sobre performance sin datos observados.
-
 Un contexto incompleto no bloquea automáticamente toda tarea: bloquea o reduce confianza únicamente cuando falta información material para la decisión concreta.
 
 Cuando el contexto sea el bloqueo, enrutar primero a `onboarding-empresa`.
-
-## 9. Modelo de estado del sistema
-
-Las futuras ejecuciones deben poder distinguir al menos:
-
-- `SIN_CONFIGURAR`;
-- `CONTEXTO_PARCIAL`;
-- `CONTEXTO_VALIDADO`;
-- `EN_ANALISIS`;
-- `REQUIERE_EVIDENCIA`;
-- `REQUIERE_VALIDACION_HUMANA`;
-- `LISTO_PARA_DECISION`;
-- `CERRADO`.
-
-Los estados exactos de ejecución se formalizarán en fases posteriores. No confundir estos estados de ejecución con los estados de los dominios de contexto ni con los resultados propios de una skill.
 
 ## 10. Criterios de calidad de arquitectura
 
@@ -260,16 +288,15 @@ Una nueva capacidad solo se añade cuando:
 6. respeta evidencia y aprobación;
 7. encaja con empresas industriales B2B e internacionalización;
 8. mantiene separada la lógica pública de una implementación privada de producción;
-9. respeta las políticas del Company Context Engine.
-
-`skills/onboarding-empresa/` sirve como referencia inicial del nivel de especificación esperado, pero no debe copiarse mecánicamente cuando otra skill requiera una metodología diferente.
+9. respeta las políticas del Company Context Engine;
+10. puede integrarse limpiamente con el Agente GTM Internacional.
 
 ## 11. Evolución por fases
 
 - **Fase 1:** constitución, arquitectura y convenciones. Completada.
 - **Fase 2:** modelo y plantillas de contexto de empresa. Completada.
-- **Fase 3:** skill de onboarding. Completada a nivel de metodología, referencias y evaluación documental.
-- **Fase 4:** agente GTM internacional.
+- **Fase 3:** skill de onboarding. Completada.
+- **Fase 4:** agente GTM internacional, routing, estados, gates, handoffs, límites y evaluación. Completada.
 - **Fase 5:** contratos compartidos.
 - **Fase 6:** skills especializadas.
 - **Fase 7:** workflows.
