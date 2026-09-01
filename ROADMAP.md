@@ -1,10 +1,8 @@
 # Roadmap de implementación
 
-Este roadmap define las fases restantes del Sistema GTM Internacional y autoriza su ejecución secuencial sobre `main` sin necesidad de revalidar el alcance al cerrar cada fase, salvo que aparezca un bloqueo real de arquitectura, seguridad o compatibilidad.
+Este roadmap documenta la primera implementación pública del Sistema GTM Internacional.
 
-## Estado actual
-
-Completadas:
+## Fases completadas
 
 - Fase 1 — constitución, arquitectura y convenciones.
 - Fase 2 — Company Context Engine.
@@ -13,76 +11,54 @@ Completadas:
 - Fase 5 — contratos compartidos.
 - Fase 6A — diagnóstico internacional, ICP y priorización de mercados.
 - Fase 6B — investigación de mercado y evaluación de distribuidores.
+- Fase 6C — investigación de cuentas y preparación comercial.
+- Fase 7 — workflows asistidos y gobernados.
+- Fase 8 — tools deterministas.
+- Fase 9 — memoria local, Quality Guard, tests y CI.
+- Fase 10 — instalación, bootstrap, documentación, ejemplo y preparación de adopción pública.
 
-## Fases restantes
+## Estado
 
-### Fase 6C — cuentas y preparación comercial
+**Primera arquitectura pública implementada.**
 
-Implementar:
+Esto no significa que el sistema esté terminado para siempre. Significa que ya existe un vertical slice coherente desde instalación y contexto hasta decisión, workflows, tools, QA y memoria.
 
-- `investigacion-de-cuentas`;
-- `preparacion-comercial`.
+## Próximas líneas de evolución
 
-Objetivo: conectar inteligencia de mercado y canal con preparación de oportunidades, reuniones y siguientes compromisos comerciales sin convertir hipótesis en necesidades confirmadas.
+Las siguientes mejoras deben venir de uso real, tests y feedback, no de añadir componentes por volumen.
 
-### Fase 7 — workflows
+Prioridades posibles:
 
-Implementar workflows asistidos y gobernados para:
+1. endurecer evaluaciones ejecutables con fixtures;
+2. mejorar compatibilidad de instalación entre agentes;
+3. añadir ejemplos end-to-end más completos;
+4. revisar scorecards con casos reales anonimizados o ficticios;
+5. añadir nuevas skills únicamente cuando aparezca una decisión repetible no cubierta;
+6. mejorar documentación de localización por mercado;
+7. ampliar tools deterministas cuando exista una necesidad estable.
 
-- configurar agente;
-- diagnosticar expansión;
-- comparar mercados;
-- explorar nuevo mercado;
-- evaluar distribuidor;
-- investigar cuenta;
-- preparar reunión.
+## Fuera del roadmap público base
 
-Cada workflow debe declarar precondiciones, skills utilizadas, gates, estados, stops, outputs y handoffs.
+No incorporar por defecto:
 
-### Fase 8 — tools deterministas
+- arquitectura multiagente de producción;
+- integraciones CRM/ERP específicas de cliente;
+- monitoring continuo;
+- queues/retries/observabilidad empresarial;
+- permisos y secrets management de producción;
+- automatización autónoma de comunicaciones externas;
+- scoring propietario avanzado;
+- learning loops automáticos de cliente.
 
-Implementar tools locales, transparentes y testeables para:
+## Definition of Done de la primera release
 
-- validar estructura de contexto;
-- calcular scorecards transparentes cuando proceda;
-- registrar decisiones;
-- validar outputs mínimos y contratos.
+La primera release debe poder demostrar que:
 
-Principio: razonamiento para juicio; código para operaciones deterministas.
-
-### Fase 9 — memoria, QA y evaluaciones ejecutables
-
-Implementar:
-
-- memoria local de decisiones, hipótesis y aprendizajes;
-- reglas de Quality Guard ligeras;
-- fixtures y validadores ejecutables;
-- tests de propiedades críticas.
-
-No implementar multi-agent QA de producción ni learning loops automáticos.
-
-### Fase 10 — adopción, instalación y release público
-
-Implementar:
-
-- instalación y primera ejecución;
-- guía de personalización;
-- buenas prácticas y límites;
-- autodiagnóstico de madurez;
-- ejemplo de empresa industrial ficticia;
-- templates de GitHub Issues/Discussions;
-- checklist de release;
-- README orientado a adopción y lead magnet.
-
-## Definition of Done global
-
-El repositorio público se considera listo para una primera release cuando:
-
-1. puede configurarse para una empresa sin inventar contexto;
-2. el agente enruta correctamente entre las capacidades implementadas;
-3. las skills y workflows comparten contratos compatibles;
-4. las operaciones deterministas críticas tienen tools y validación;
-5. existen tests de propiedades, no solo ejemplos narrativos;
-6. el sistema mantiene aprobación humana en decisiones sensibles;
-7. la documentación permite instalar, personalizar y entender límites;
-8. la experiencia demuestra arquitectura de automatización profesional sin exponer infraestructura privada de producción.
+1. una empresa puede inicializar contexto sin inventar datos;
+2. el sistema sabe qué skill/workflow usar y cuándo detenerse;
+3. todas las capacidades comparten principios de evidencia y handoff;
+4. las operaciones deterministas clave tienen código;
+5. existen tests y CI;
+6. decisiones sensibles conservan aprobación humana;
+7. instalación y límites están documentados;
+8. el repositorio demuestra arquitectura profesional sin exponer implementaciones privadas de producción.
