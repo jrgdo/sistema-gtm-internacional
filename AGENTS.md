@@ -14,21 +14,20 @@ Antes de ejecutar una tarea GTM sustantiva:
 
 1. leer `ARCHITECTURE.md`;
 2. leer `agents/agente-gtm-internacional/AGENT.md`;
-3. leer los documentos relevantes en `docs/`;
+3. leer `docs/contratos-compartidos.md`;
 4. comprobar si existe `company-context/STATUS.md`;
-5. si existe, leer `company-context/STATUS.md` antes que el resto del contexto;
-6. cargar únicamente los dominios de contexto necesarios para la decisión;
-7. comprobar estado, relevancia, conflictos y frescura de esos dominios;
-8. si no existe contexto o es insuficiente para el objetivo, ejecutar `skills/onboarding-empresa/SKILL.md`;
-9. devolver el control de coordinación al Agente GTM Internacional;
-10. identificar el objetivo y reformularlo como decisión comercial o entregable concreto;
-11. aplicar routing, gates y handoffs del agente;
-12. seleccionar el workflow más pequeño que resuelva correctamente la tarea cuando exista;
-13. seleccionar solo las skills necesarias;
-14. usar tools deterministas para cálculo, validación, persistencia o transformación cuando existan;
-15. comprobar evidencia, supuestos, riesgos y aprobaciones;
-16. presentar una recomendación proporcional a la evidencia;
-17. guardar únicamente contexto o aprendizaje permitido por las reglas de persistencia.
+5. validar contexto, relevancia, frescura y conflictos;
+6. si el contexto es insuficiente, ejecutar `skills/onboarding-empresa/SKILL.md`;
+7. devolver el control al Agente GTM Internacional;
+8. identificar objetivo y decisión;
+9. aplicar routing, gates y camino mínimo;
+10. estructurar la entrada del componente según `contracts/entrada-componente.yaml`;
+11. ejecutar únicamente workflow, skill o tool necesarios;
+12. interpretar el resultado según `contracts/salida-componente.yaml`;
+13. utilizar `contracts/handoff.yaml` cuando exista transferencia entre componentes;
+14. comprobar evidencia, confianza, riesgos y approvals;
+15. cerrar según `contracts/cierre-ejecucion.yaml`;
+16. persistir únicamente lo permitido.
 
 ## 3. Regla principal
 
@@ -36,127 +35,77 @@ Antes de ejecutar una tarea GTM sustantiva:
 
 ## 4. Capa de orquestación
 
-`agents/agente-gtm-internacional/AGENT.md` es la capa oficial de coordinación del sistema.
-
-Su responsabilidad es decidir:
-
-- qué debe hacerse ahora;
-- qué no debe hacerse todavía;
-- qué contexto es necesario;
-- qué workflow o skill corresponde;
-- cuándo detenerse;
-- cuándo solicitar evidencia;
-- cuándo pedir validación humana;
-- cuándo escalar a expertise especializado.
+`agents/agente-gtm-internacional/AGENT.md` es la capa oficial de coordinación. Decide qué debe ocurrir ahora, qué no debe ocurrir todavía, qué contexto falta, qué componente corresponde, cuándo detenerse y cuándo escalar.
 
 No duplicar metodología especializada dentro del agente si existe o debe existir una skill responsable.
 
-Consultar además:
+## 5. Contratos compartidos
 
-- `agents/agente-gtm-internacional/references/routing.md`;
-- `agents/agente-gtm-internacional/references/estados.md`;
-- `agents/agente-gtm-internacional/references/gates-de-decision.md`;
-- `agents/agente-gtm-internacional/references/politica-de-handoffs.md`;
-- `agents/agente-gtm-internacional/references/limites-operativos.md`.
+`contracts/` define el lenguaje común del sistema.
 
-## 5. Company Context Engine
+Los contratos canónicos son:
 
-`company-context/` es la fuente de contexto validado de una implementación concreta. Las plantillas públicas viven en `templates/contexto-empresa/` y nunca deben confundirse con datos reales de una empresa.
+- `contracts/entrada-componente.yaml`;
+- `contracts/salida-componente.yaml`;
+- `contracts/handoff.yaml`;
+- `contracts/cierre-ejecucion.yaml`;
+- `contracts/evidencia.yaml`;
+- `contracts/decision.yaml`;
+- `contracts/error-operativo.yaml`;
+- `contracts/estados.yaml`;
+- `contracts/confianza.yaml`.
+
+Reglas obligatorias:
+
+- no rellenar campos desconocidos con contenido plausible;
+- mantener separados hechos, inferencias, hipótesis, supuestos y desconocidos;
+- no ocultar gaps o conflictos para facilitar el routing;
+- no confundir una recomendación con una decisión aprobada;
+- no confundir estados de sistema, contexto o skills;
+- justificar confianza por contexto y evidencia, nunca por fluidez del modelo;
+- los contratos son internos: no es obligatorio mostrar YAML al usuario.
+
+Toda nueva skill deberá consumir conceptualmente `entrada-componente` y producir `salida-componente`.
+
+## 6. Company Context Engine
+
+`company-context/` es la fuente de contexto validado de una implementación concreta. Las plantillas públicas viven en `templates/contexto-empresa/`.
 
 Antes de usar contexto:
 
 - leer `STATUS.md`;
-- comprobar qué dominios están `VALIDADO`, `PARCIAL`, `OBSOLETO` o `CONFLICTO`;
-- revisar la fecha cuando la frescura pueda cambiar la decisión;
-- no cargar información irrelevante por defecto;
+- comprobar estado, procedencia, frescura y conflictos;
+- cargar solo los dominios relevantes;
 - no asumir que un estado global validado hace vigente cada dato individual.
 
-Las reglas detalladas están en:
+Consultar `docs/modelo-de-contexto.md`, `docs/politica-de-escritura-de-contexto.md`, `docs/politica-de-frescura.md` y `docs/gestion-de-conflictos.md`.
 
-- `docs/modelo-de-contexto.md`;
-- `docs/politica-de-escritura-de-contexto.md`;
-- `docs/politica-de-frescura.md`;
-- `docs/gestion-de-conflictos.md`.
-
-## 6. Onboarding de empresa
+## 7. Onboarding de empresa
 
 La skill canónica de configuración está en `skills/onboarding-empresa/SKILL.md`.
 
-Debe ejecutarse cuando:
+Ejecutarla cuando falte contexto material, exista conflicto u obsolescencia bloqueante o el usuario quiera configurar/actualizar el agente. Debe revisar primero documentación disponible, detectar cobertura y preguntar solo lo necesario.
 
-- no existe `company-context/`;
-- falta `STATUS.md`;
-- faltan dominios bloqueantes para la decisión actual;
-- existen conflictos u obsolescencia que impiden utilizar el contexto con seguridad;
-- el usuario pide configurar o actualizar el agente para su empresa.
+## 8. Modelo de verdad
 
-El onboarding debe ser adaptativo: revisar primero la documentación disponible, detectar cobertura y gaps, preguntar solo lo necesario y validar antes de promover información a verdad operativa.
+No mezclar silenciosamente:
 
-No ejecutar onboarding completo si el contexto ya es suficiente para la decisión actual.
-
-## 7. Modelo de verdad
-
-No mezclar silenciosamente estas categorías:
-
-- **Hecho confirmado:** información explícita validada por la empresa o respaldada por una fuente fiable.
-- **Evidencia externa:** información observable obtenida de fuentes externas.
-- **Inferencia:** conclusión razonable derivada de hechos o evidencia.
-- **Hipótesis:** explicación o posibilidad que requiere validación.
-- **Supuesto:** condición adoptada temporalmente para poder avanzar.
-- **Desconocido:** información material que falta.
+- hecho confirmado;
+- evidencia externa;
+- inferencia;
+- hipótesis;
+- supuesto;
+- desconocido.
 
 Una inferencia nunca debe guardarse como verdad de empresa sin validación.
 
-Estados conceptuales adicionales para persistencia: `PENDIENTE_DE_VALIDAR`, `OBSOLETO` y `CONFLICTO`.
-
-## 8. Política de escritura
-
-Puede incorporarse como contexto confirmado información explícitamente proporcionada por un responsable autorizado o respaldada por documentación interna vigente y trazable.
-
-No promocionar automáticamente a verdad de empresa:
-
-- investigación web;
-- inferencias del modelo;
-- hipótesis de necesidad de cliente;
-- señales de mercado;
-- borradores;
-- claims no aprobados;
-- información antigua cuya vigencia sea material.
-
-Ante una contradicción material, no elegir silenciosamente una versión. Registrar el conflicto y solicitar validación.
-
 ## 9. Especialización industrial B2B
 
-Evita aplicar automáticamente metodologías de SaaS B2B, e-commerce o consumo cuando no encajan.
+Evita aplicar automáticamente metodologías de SaaS, e-commerce o consumo. Considera cuando sea material: ciclos largos, múltiples stakeholders, aplicación técnica, homologación, certificación, canal, distribuidores, agentes, integradores, OEM, servicio, posventa, capacidad productiva, logística, lead times, ferias, referencias y riesgo de canal.
 
-En industrial B2B considera, cuando sea relevante:
+No supongas que todos aplican siempre.
 
-- ciclos de venta largos;
-- múltiples stakeholders técnicos y económicos;
-- aplicaciones específicas;
-- homologación, certificación y normativa;
-- distribuidores, agentes, integradores y OEM;
-- servicio técnico y posventa;
-- muestras, pruebas, validaciones y proyectos piloto;
-- referencias y confianza comercial;
-- capacidad productiva, logística y lead times;
-- conflictos de canal;
-- ferias y asociaciones sectoriales;
-- diferencias culturales y lingüísticas;
-- condiciones comerciales, Incoterms y cobertura territorial;
-- importancia del conocimiento tácito del equipo comercial.
-
-No supongas que todos estos factores aplican siempre. Selecciona los relevantes para la decisión.
-
-## 10. Contexto español e internacional
-
-El usuario objetivo puede ser una empresa española que empieza a exportar, exporta de forma reactiva, profesionaliza mercados existentes, selecciona nuevos países, trabaja con distribuidores, vende directamente o combina canal directo e indirecto.
-
-No trates España como el único contexto posible. El sistema debe poder analizar cualquier mercado objetivo y trabajar con fuentes en otros idiomas.
-
-## 11. Routing y camino mínimo
-
-No ejecutar componentes por costumbre.
+## 10. Routing y camino mínimo
 
 Routing conceptual:
 
@@ -171,70 +120,34 @@ Routing conceptual:
 
 **Ejecutar el menor conjunto de componentes capaz de resolver correctamente la decisión.**
 
-Si falta un fundamento material, detener y enrutar upstream en lugar de inventarlo.
+## 11. Gates, stops y escalado
 
-## 12. Gates, stops y escalado
+Un gate puede devolver `PASS`, `PASS_CON_LIMITES`, `REQUIERE_INPUT`, `REQUIERE_EVIDENCIA`, `REQUIERE_VALIDACION_HUMANA` o `BLOCK`.
 
-Los gates pueden devolver conceptualmente:
+Un stop puede ser la salida profesional correcta. Escalar cuando la cuestión material sea fiscal, legal, regulatoria, aduanera, financiera sensible o de ingeniería crítica.
 
-- `PASS`;
-- `PASS_CON_LIMITES`;
-- `REQUIERE_INPUT`;
-- `REQUIERE_EVIDENCIA`;
-- `REQUIERE_VALIDACION_HUMANA`;
-- `BLOCK`.
+## 12. Evidencia y confianza
 
-No considerar un stop como fallo técnico. Puede ser la salida profesional correcta.
+Aplicar `contracts/evidencia.yaml` y `contracts/confianza.yaml`.
 
-Escalar a expertise especializado cuando la cuestión material sea fiscal, legal, regulatoria, aduanera, financiera sensible o de ingeniería crítica.
+Priorizar fuentes adecuadas a la afirmación y registrar cuando sea material fuente, fecha, geografía, alcance y limitaciones.
 
-## 13. Evidencia
+No convertir una señal débil en necesidad de cliente ni una correlación en causalidad.
 
-Priorizar fuentes primarias, oficiales, empresariales o sectoriales adecuadas a la afirmación.
+## 13. Aprobación humana
 
-Registrar, cuando sea material: fuente, fecha, geografía, alcance, nivel de confianza y limitaciones.
+Requiere validación humana antes de tratar como definitivos claims técnicos, certificaciones, aptitud regulatoria, ROI, pricing, descuentos, entrega, garantías, exclusividad, compromisos contractuales y comunicaciones externas con impacto material.
 
-No convertir una señal débil en una necesidad de cliente ni una correlación en causalidad.
+## 14. Persistencia
 
-## 14. Aprobación humana
+Guardar solo información con valor futuro y estado claro. `company-context/` no es una memoria indiscriminada de todo lo que el modelo ha visto.
 
-Requiere validación humana antes de tratar como definitivo cualquier elemento sensible, especialmente claims técnicos, certificaciones, aptitud regulatoria, resultados de clientes, ROI, pricing, descuentos, pago, entrega, garantías, exclusividad, compromisos contractuales y comunicaciones externas con impacto material.
+## 15. Calidad de componentes futuros
 
-Consultar `company-context/APROBACIONES.md` cuando exista. Si no está definido el aprobador, marcar `REQUIERE_VALIDACION_HUMANA`.
+Ninguna skill, workflow o tool debe añadirse como prompt genérico. Debe cumplir las convenciones en `docs/` y los contratos de `contracts/`.
 
-## 15. Persistencia
+`skills/onboarding-empresa/` es la referencia inicial de profundidad, no una plantilla para copiar mecánicamente.
 
-Guardar solo información que tenga valor futuro y un estado claro.
+## 16. Límites del repositorio público
 
-No guardar automáticamente como verdad brainstorming, hipótesis débiles, borradores, hallazgos externos sin validar, datos personales innecesarios o conclusiones temporales.
-
-La fuente de verdad controlada es `company-context/`; no debe convertirse en una memoria indiscriminada de todo lo que el modelo ha visto.
-
-## 16. Estándar mínimo de salida
-
-Todo entregable sustantivo debe dejar claros, explícita o implícitamente según el formato:
-
-1. objetivo o decisión;
-2. contexto utilizado;
-3. evidencia relevante;
-4. supuestos y gaps;
-5. recomendación o resultado;
-6. confianza y riesgos;
-7. validación/aprobación necesaria;
-8. siguiente acción.
-
-## 17. Calidad de componentes futuros
-
-Ninguna skill, workflow o tool debe añadirse como un prompt genérico.
-
-Debe cumplir las convenciones definidas en:
-
-- `docs/convenciones-de-skills.md`
-- `docs/convenciones-de-workflows.md`
-- `docs/convenciones-de-tools.md`
-
-`skills/onboarding-empresa/` es la implementación de referencia inicial para el estándar de skills.
-
-## 18. Límites del repositorio público
-
-Este repositorio debe ser útil de forma autónoma, pero no debe incorporar por defecto arquitectura de producción específica de clientes, credenciales, automatizaciones empresariales privadas, datos confidenciales ni infraestructura que requiera una implementación profesional personalizada.
+Este repositorio debe ser útil de forma autónoma, pero no debe incorporar por defecto arquitectura de producción específica de clientes, credenciales, automatizaciones empresariales privadas, datos confidenciales ni infraestructura avanzada que requiera implementación profesional personalizada.
