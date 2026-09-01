@@ -9,28 +9,49 @@ Antes de realizar trabajo sustantivo:
 1. lee `AGENTS.md`;
 2. lee `ARCHITECTURE.md`;
 3. carga únicamente la documentación relevante de `docs/`;
-4. comprueba si existe contexto de empresa válido;
-5. si falta contexto esencial, no lo inventes;
-6. identifica el objetivo y la decisión comercial;
-7. selecciona el workflow y las skills mínimas necesarias;
-8. utiliza tools deterministas cuando exista una herramienta adecuada;
-9. aplica las reglas de evidencia, aprobación y persistencia antes de cerrar la tarea.
+4. comprueba si existe `company-context/STATUS.md`;
+5. si existe, léelo primero y determina qué dominios son relevantes para la decisión;
+6. comprueba estado, frescura y conflictos antes de usar esos dominios;
+7. si falta contexto esencial, no lo inventes;
+8. identifica el objetivo y la decisión comercial;
+9. selecciona el workflow y las skills mínimas necesarias;
+10. utiliza tools deterministas cuando exista una herramienta adecuada;
+11. aplica las reglas de evidencia, aprobación y persistencia antes de cerrar la tarea.
+
+## Company Context Engine
+
+Las plantillas públicas viven en `templates/contexto-empresa/`. En una implementación concreta, el contexto operativo debe vivir en `company-context/`.
+
+`company-context/STATUS.md` es el índice de salud del contexto. No cargues todos los archivos automáticamente si no son necesarios.
+
+Antes de confiar en un dato, pregunta:
+
+- ¿está confirmado o es una inferencia?;
+- ¿procede de una fuente autorizada?;
+- ¿sigue vigente para la decisión actual?;
+- ¿existe un conflicto abierto?;
+- ¿requiere aprobación humana?
+
+No sobrescribas información confirmada con investigación externa. Si una nueva fuente contradice el contexto, registra el conflicto y escala según `docs/gestion-de-conflictos.md`.
 
 ## Uso del sistema de archivos
 
-Cuando el repositorio evolucione y exista contexto local de empresa:
+Cuando exista contexto local de empresa:
 
-- lee primero su estado antes de utilizarlo;
-- no sobrescribas información confirmada con investigación externa;
-- conserva por separado verdad de empresa, hipótesis y aprendizaje;
+- lee `STATUS.md` antes de los dominios específicos;
+- conserva por separado verdad de empresa, hipótesis e investigación;
+- aplica `docs/politica-de-escritura-de-contexto.md` antes de persistir cambios;
+- aplica `docs/politica-de-frescura.md` cuando la fecha pueda cambiar la decisión;
 - evita guardar datos personales o confidenciales que no sean necesarios;
 - no incluyas credenciales, tokens o secretos en archivos versionados.
 
 ## Comportamiento de primera ejecución
 
-Si no existe una configuración válida de empresa, la respuesta correcta no es generar una estrategia genérica. Debe iniciarse el proceso de onboarding cuando esté disponible.
+Si no existe una configuración válida de empresa, la respuesta correcta no es generar una estrategia genérica.
 
-Mientras el onboarding todavía no exista, identifica explícitamente la información mínima necesaria y no presentes recomendaciones definitivas.
+Mientras el onboarding todavía no exista, utiliza las plantillas de `templates/contexto-empresa/` como modelo, identifica la información mínima necesaria y evita recomendaciones definitivas que dependan de contexto ausente.
+
+No debes completar los templates inventando información.
 
 ## Uso de herramientas
 
@@ -48,8 +69,9 @@ No ejecutes acciones externas sensibles sin autorización explícita.
 Antes de finalizar un entregable GTM, verifica:
 
 - ¿la decisión está clara?;
+- ¿el contexto utilizado está suficientemente validado y vigente?;
 - ¿la evidencia respalda la recomendación?;
-- ¿se han señalado gaps e hipótesis?;
+- ¿se han señalado gaps, conflictos e hipótesis?;
 - ¿la recomendación está adaptada a industrial B2B cuando corresponde?;
 - ¿hay una siguiente acción concreta?;
 - ¿requiere aprobación humana?;
