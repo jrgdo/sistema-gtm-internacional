@@ -2,76 +2,71 @@
 
 Claude Code debe tratar este repositorio como un sistema GTM estructurado, no como una colección de prompts.
 
-## Inicio obligatorio
+## Inicio
 
 1. Lee `AGENTS.md`.
 2. Lee `ARCHITECTURE.md`.
 3. Lee `agents/agente-gtm-internacional/AGENT.md`.
 4. Comprueba `company-context/STATUS.md` si existe.
-5. Si falta contexto material, ejecuta `skills/onboarding-empresa/SKILL.md`.
-6. Devuelve el control al Agente GTM Internacional.
-7. Identifica objetivo y decisión.
-8. Aplica routing, gates y camino mínimo.
-9. Usa contratos de `contracts/`.
-10. Ejecuta solo las skills necesarias.
+5. Si falta contexto material, ejecuta `onboarding-empresa`.
+6. Identifica objetivo y decisión.
+7. Aplica routing, gates y camino mínimo.
+8. Usa contracts para handoffs cuando estén disponibles.
+9. Ejecuta workflow/skills/tools necesarios.
+10. Aplica Quality Guard antes de `LISTO_PARA_DECISION`.
 
 ## Skills activas
 
-- `skills/onboarding-empresa/`
-- `skills/diagnostico-internacional/`
-- `skills/definicion-icp/`
-- `skills/priorizacion-de-mercados/`
-- `skills/investigacion-de-mercado/`
-- `skills/evaluacion-de-distribuidores/`
+- `sistema-gtm-internacional`
+- `onboarding-empresa`
+- `diagnostico-internacional`
+- `definicion-icp`
+- `priorizacion-de-mercados`
+- `investigacion-de-mercado`
+- `evaluacion-de-distribuidores`
+- `investigacion-de-cuentas`
+- `preparacion-comercial`
 
-Routing principal:
+## Contexto
 
-- falta contexto → onboarding;
-- readiness incierto → diagnóstico;
-- ICP insuficiente → definición de ICP;
-- comparación de países → priorización;
-- evidencia detallada de mercado → investigación de mercado;
-- evaluación de partner identificado → evaluación de distribuidores.
+`company-context/` es verdad operativa controlada. Leer `STATUS.md`, comprobar procedencia, frescura y conflictos, y no sobrescribirla con research externo.
 
-No simules como implementadas skills futuras.
+## Uso de herramientas
 
-## Research
-
-No producir country reports genéricos cuando la decisión requiera evidence gathering acotado.
-
-Desk research no equivale a market validation. Separar hechos, señales, inferencias, hipótesis y unknowns. No inferir buyer need o demanda desde señales débiles.
-
-## Distribuidores
-
-No confundir presencia web, tamaño, portfolio o antigüedad con acceso real, capacidad técnica o prioridad futura.
-
-Distinguir pre-evaluación de qualification. No recomendar exclusividad ni condiciones sensibles sin aprobación humana.
-
-## Contexto y contratos
-
-`company-context/STATUS.md` es el punto de entrada al contexto.
-
-Toda ejecución sustantiva debe respetar `contracts/README.md` y `docs/contratos-compartidos.md`.
-
-No sobrescribir verdad confirmada con research externo.
-
-## Herramientas
-
-- modelo → razonamiento, interpretación y síntesis;
+- modelo → juicio, interpretación, investigación y síntesis;
 - código/tool → cálculo, validación, transformación y persistencia repetible.
 
-No ejecutar acciones externas sensibles sin autorización.
+No uses razonamiento probabilístico para una operación que debe ser determinista.
 
-## Especialización industrial B2B
+## Reglas críticas
 
-Adaptar análisis a aplicaciones técnicas, ciclos largos, canal, homologación, servicio, capacidad, logística y buying complexity cuando sean materiales.
+- research != customer discovery;
+- señal != intención;
+- cargo != autoridad;
+- unknown != cero;
+- web/portfolio != acceso real de distribuidor;
+- fit de cuenta != necesidad confirmada;
+- score != decisión.
 
 ## Aprobación y escalado
 
-Escalar cuestiones fiscales, legales, regulatorias, aduaneras, financieras sensibles o de ingeniería crítica.
+No validar autónomamente claims, certificaciones, suitability regulatoria, pricing, exclusividad, garantías, contratos ni compromisos externos sensibles.
 
-No validar autónomamente claims, certificaciones, pricing, exclusividad, garantías o compromisos contractuales.
+Escalar fiscalidad, legal, regulación, aduanas, finanzas sensibles e ingeniería crítica.
+
+## Memoria
+
+No mezclar `company-context/` con decisiones, hipótesis o aprendizajes. Promover cambios a verdad de empresa solo mediante política de contexto y validación.
+
+## Tests
+
+Tras cambios de código/arquitectura, hacer best effort para ejecutar:
+
+```bash
+python -m py_compile tools/*.py tests/validar_sistema.py skills/sistema-gtm-internacional/scripts/inicializar_contexto.py
+python tests/validar_sistema.py
+```
 
 ## Idioma
 
-Trabaja en español por defecto. Puede investigar fuentes locales y producir entregables en otros idiomas cuando el mercado lo requiera.
+Trabaja en español por defecto. Usa fuentes y materiales en otros idiomas cuando la decisión internacional lo requiera.
