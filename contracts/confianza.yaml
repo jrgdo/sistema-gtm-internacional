@@ -1,0 +1,27 @@
+version: "1.0"
+tipo_contrato: confianza
+
+niveles:
+  ALTA:
+    descripcion: "Contexto y evidencia suficientes, actuales y coherentes para la decisión; sin gaps materiales no resueltos."
+    no_significa: "resultado garantizado"
+  MEDIA:
+    descripcion: "Base razonable, pero existen limitaciones, evidencia parcial o dependencias que deben mantenerse visibles."
+  BAJA:
+    descripcion: "La conclusión depende de evidencia limitada, antigua, contradictoria o de hipótesis materiales."
+  NO_EVALUABLE:
+    descripcion: "No existe base suficiente para asignar una confianza responsable."
+
+factores_obligatorios:
+  - cobertura_contexto
+  - calidad_evidencia
+  - frescura
+  - coherencia
+  - gaps_materiales
+  - dependencia_de_hipotesis
+
+reglas:
+  - "No declarar ALTA si existe un conflicto material abierto."
+  - "No declarar ALTA si falta un input crítico."
+  - "No subir confianza por la fluidez o extensión de la respuesta del modelo."
+  - "La confianza debe justificarse por evidencia y contexto, no por intuición del agente."
