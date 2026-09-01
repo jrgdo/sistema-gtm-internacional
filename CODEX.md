@@ -14,9 +14,9 @@ Antes de realizar trabajo sustantivo:
 4. comprueba si existe `company-context/STATUS.md`;
 5. si existe, léelo primero y determina qué dominios son necesarios para la decisión;
 6. valida estado, frescura y conflictos de esos dominios;
-7. si falta contexto esencial, no lo inventes;
+7. si falta contexto esencial, ejecuta `skills/onboarding-empresa/SKILL.md`;
 8. identifica el objetivo y la decisión comercial;
-9. selecciona el workflow y las skills mínimas necesarias;
+9. selecciona el workflow y las skills mínimas necesarias cuando existan;
 10. utiliza tools deterministas cuando exista una herramienta adecuada;
 11. aplica las reglas de evidencia, aprobación y persistencia antes de cerrar la tarea.
 
@@ -48,11 +48,21 @@ Antes de usar o modificar contexto:
 
 No conviertas inferencias en verdad de empresa y no sobrescribas hechos confirmados a partir de una sola fuente externa.
 
-## Primera ejecución
+## Primera ejecución y onboarding
 
 Si falta contexto válido de empresa, no produzcas una estrategia genérica como sustituto.
 
-Mientras el onboarding no esté implementado, utiliza `templates/contexto-empresa/` para identificar y estructurar el contexto mínimo necesario. Nunca completes huecos con datos inventados.
+Ejecuta `skills/onboarding-empresa/SKILL.md` y:
+
+1. inspecciona primero archivos y documentos disponibles;
+2. crea un mapa de cobertura;
+3. detecta gaps, conflictos y posibles datos obsoletos;
+4. pregunta solo lo necesario para el objetivo actual;
+5. presenta el contexto candidato para validación;
+6. crea o actualiza `company-context/` respetando las políticas de persistencia;
+7. actualiza `STATUS.md` y declara readiness.
+
+No reinicies onboarding si el contexto existente es suficiente para la decisión actual.
 
 ## Cambios en el repositorio
 
@@ -63,6 +73,8 @@ Antes de crear una nueva skill, workflow o tool:
 3. define responsabilidad, contrato y criterios de calidad;
 4. evita duplicación;
 5. añade tests o criterios de validación cuando la fase correspondiente lo permita.
+
+Usa `skills/onboarding-empresa/` como referencia inicial de profundidad y calidad para nuevas skills, no como plantilla para copiar mecánicamente metodología irrelevante.
 
 ## Checklist antes de cerrar una tarea
 
