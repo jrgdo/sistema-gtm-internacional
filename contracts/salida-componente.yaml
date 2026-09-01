@@ -1,0 +1,34 @@
+version: "1.0"
+tipo_contrato: salida_componente
+
+componente:
+  tipo: null
+  nombre: null
+
+resultado: null
+estado: null
+
+hechos: []
+inferencias: []
+hipotesis: []
+supuestos: []
+desconocidos: []
+
+evidencia: []
+
+confianza:
+  nivel: null
+  justificacion: null
+
+riesgos: []
+validacion_necesaria: []
+
+siguiente_accion: null
+handoff_recomendado:
+  requerido: false
+  componente: null
+  motivo: null
+
+persistencia:
+  escribir_contexto: []
+  no_escribir: []
