@@ -1,0 +1,33 @@
+version: "1.0"
+tipo_contrato: entrada_componente
+
+objetivo: null
+decision: null
+entregable_esperado: null
+
+estado_actual: null
+
+contexto_relevante:
+  dominios: []
+  referencias: []
+  estado_contexto: null
+
+inputs_confirmados: []
+restricciones: []
+gaps_materiales: []
+
+# Evidencia ya disponible antes de ejecutar el componente.
+evidencia_disponible: []
+
+componente_destino:
+  tipo: null   # agent | workflow | skill | tool
+  nombre: null
+
+criterio_de_finalizacion: null
+
+aprobaciones_relevantes: []
+
+metadatos:
+  idioma: es
+  mercado_objetivo: null
+  fecha_referencia: null
