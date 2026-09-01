@@ -1,0 +1,23 @@
+version: "1.0"
+tipo_contrato: error_operativo
+
+codigo: null
+categoria: null   # contexto | evidencia | conflicto | aprobacion | scope | ejecucion
+mensaje_usuario: null
+mensaje_tecnico: null
+
+estado_resultante: null
+
+bloqueante: true
+recuperable: true
+
+causas: []
+datos_faltantes: []
+conflictos: []
+
+accion_recomendada: null
+componente_siguiente: null
+requiere_validacion_humana: false
+
+# No incluir secretos, credenciales ni datos personales innecesarios.
+detalles_seguros: []
