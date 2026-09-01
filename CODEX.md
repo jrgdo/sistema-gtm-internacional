@@ -2,122 +2,63 @@
 
 Codex debe tratar este repositorio como un sistema GTM estructurado, no como una colección de prompts.
 
-`AGENTS.md` es la instrucción raíz del proyecto. Este archivo añade notas específicas de ejecución para Codex.
+`AGENTS.md` es la instrucción raíz del proyecto.
 
 ## Inicio obligatorio
 
-Antes de realizar trabajo sustantivo:
+1. Lee `AGENTS.md`.
+2. Lee `ARCHITECTURE.md`.
+3. Lee `agents/agente-gtm-internacional/AGENT.md`.
+4. Lee `docs/contratos-compartidos.md`.
+5. Comprueba `company-context/STATUS.md` si existe.
+6. Valida contexto, frescura y conflictos.
+7. Si falta contexto esencial, ejecuta `skills/onboarding-empresa/SKILL.md`.
+8. Devuelve el control al Agente GTM Internacional.
+9. Identifica objetivo y decisión.
+10. Aplica routing, gates y camino mínimo.
+11. Antes de invocar un componente, estructura semánticamente su entrada según `contracts/entrada-componente.yaml`.
+12. Interpreta la salida según `contracts/salida-componente.yaml`.
+13. Usa `contracts/handoff.yaml` para transferencias relevantes.
+14. Aplica `contracts/evidencia.yaml`, `contracts/confianza.yaml` y approvals.
+15. Cierra según `contracts/cierre-ejecucion.yaml`.
 
-1. lee `AGENTS.md`;
-2. lee `ARCHITECTURE.md`;
-3. lee `agents/agente-gtm-internacional/AGENT.md`;
-4. carga únicamente la documentación relevante de `docs/`;
-5. comprueba si existe `company-context/STATUS.md`;
-6. si existe, léelo primero y determina qué dominios son necesarios para la decisión;
-7. valida estado, frescura y conflictos de esos dominios;
-8. si falta contexto esencial, ejecuta `skills/onboarding-empresa/SKILL.md`;
-9. tras onboarding o validación de contexto, devuelve el control al Agente GTM Internacional;
-10. selecciona el workflow y las skills mínimas necesarias cuando existan;
-11. utiliza tools deterministas cuando exista una herramienta adecuada;
-12. aplica las reglas de evidencia, aprobación y persistencia antes de cerrar la tarea.
+## Contratos compartidos
 
-## Agente GTM Internacional
+Los YAML de `contracts/` definen interoperabilidad interna. No deben convertirse en ruido visible para el usuario.
 
-`agents/agente-gtm-internacional/AGENT.md` es la capa de coordinación.
+No rellenes campos desconocidos con inferencias. Mantén separados hechos, inferencias, hipótesis, supuestos y desconocidos.
 
-Debe decidir:
+No confundas estados de sistema, estados de contexto y resultados propios de skills.
 
-- qué decisión o entregable intenta preparar el usuario;
-- qué contexto es material;
-- qué componente usar;
-- qué prerequisites deben cumplirse;
-- cuándo avanzar, bloquear o escalar;
-- cuándo solicitar validación humana.
+Una recomendación no equivale a una decisión aprobada.
 
-Aplica siempre el principio de camino mínimo y consulta las referencias del agente sobre routing, estados, gates, handoffs y límites cuando sean relevantes.
+## Uso de archivos, shell y tools
 
-## Uso de archivos, shell y herramientas
-
-Cuando estén disponibles y autorizadas, utiliza filesystem, shell y otras herramientas para realizar operaciones verificables.
-
-Principio:
+Cuando estén autorizados:
 
 - juicio, interpretación y síntesis → modelo;
 - cálculo, validación, persistencia y transformación repetible → tool o código.
 
-No uses código para ocultar una decisión metodológica que debería ser explícita. No uses razonamiento probabilístico del modelo para operaciones que deben ser deterministas.
+No uses código para ocultar decisiones metodológicas. No uses razonamiento probabilístico para operaciones que deben ser deterministas.
 
 ## Company Context Engine
 
-Las plantillas públicas viven en `templates/contexto-empresa/`. El contexto operativo de una empresa concreta debe vivir en `company-context/`.
+El contexto real vive en `company-context/`. Lee `STATUS.md` primero, carga solo dominios relevantes y aplica políticas de escritura, frescura y conflictos antes de modificar información.
 
-`company-context/STATUS.md` es el punto de entrada obligatorio al contexto. No cargues todos los dominios por defecto.
+No guardes secretos, tokens o credenciales.
 
-Antes de usar o modificar contexto:
+## Creación de nuevos componentes
 
-- comprueba procedencia y estado;
-- comprueba si la frescura puede cambiar la decisión;
-- identifica conflictos abiertos;
-- aplica `docs/politica-de-escritura-de-contexto.md`;
-- aplica `docs/politica-de-frescura.md`;
-- usa `docs/gestion-de-conflictos.md` si dos fuentes materiales no coinciden.
+Toda nueva skill debe consumir conceptualmente `contracts/entrada-componente.yaml` y producir `contracts/salida-componente.yaml`.
 
-No conviertas inferencias en verdad de empresa y no sobrescribas hechos confirmados a partir de una sola fuente externa.
+Todo workflow debe preservar los handoffs relevantes mediante `contracts/handoff.yaml`.
 
-## Primera ejecución y onboarding
+Toda tool futura deberá declarar qué campos recibe y devuelve.
 
-Si falta contexto válido de empresa, no produzcas una estrategia genérica como sustituto.
+## Especialización industrial B2B
 
-Ejecuta `skills/onboarding-empresa/SKILL.md` y:
-
-1. inspecciona primero archivos y documentos disponibles;
-2. crea un mapa de cobertura;
-3. detecta gaps, conflictos y posibles datos obsoletos;
-4. pregunta solo lo necesario para el objetivo actual;
-5. presenta el contexto candidato para validación;
-6. crea o actualiza `company-context/` respetando las políticas de persistencia;
-7. actualiza `STATUS.md` y declara readiness.
-
-No reinicies onboarding si el contexto existente es suficiente para la decisión actual.
-
-## Routing, gates y stops
-
-Antes de ejecutar una capacidad downstream:
-
-- comprueba prerequisites;
-- no inventes inputs faltantes;
-- permite `PASS_CON_LIMITES` cuando el gap no sea material;
-- detente si existe conflicto, evidencia insuficiente o aprobación obligatoria;
-- escala a expertise humano especializado cuando la cuestión material sea fiscal, legal, regulatoria, aduanera, financiera sensible o de ingeniería crítica.
-
-Un stop correcto no es un error técnico.
-
-## Cambios en el repositorio
-
-Antes de crear una nueva skill, workflow o tool:
-
-1. comprueba si ya existe una capacidad equivalente;
-2. lee la convención correspondiente en `docs/`;
-3. define responsabilidad, contrato y criterios de calidad;
-4. evita duplicación;
-5. añade tests o criterios de validación cuando la fase correspondiente lo permita.
-
-Usa `skills/onboarding-empresa/` como referencia inicial de profundidad para skills y `agents/agente-gtm-internacional/` como referencia de calidad de orquestación, sin copiar mecánicamente lógica irrelevante.
-
-## Checklist antes de cerrar una tarea
-
-- objetivo/decisión entendidos;
-- contexto suficiente, vigente y sin conflictos bloqueantes;
-- camino mínimo aplicado;
-- prerequisites y gates respetados;
-- evidencia proporcionada o identificada;
-- hechos e hipótesis separados;
-- riesgos y gaps visibles;
-- recomendación proporcional a la confianza;
-- siguiente acción clara;
-- aprobación humana o escalado especializado señalado cuando aplica;
-- persistencia compatible con la política de contexto.
+Adapta el trabajo a empresas industriales y exportadoras. Considera aplicación, canal, capacidad técnica, homologación, posventa, logística, distribuidores, integradores y ciclos largos cuando sean relevantes.
 
 ## Idioma
 
-Trabaja en español por defecto. Las fuentes y entregables de mercado pueden utilizar otros idiomas cuando la tarea de internacionalización lo requiera.
+Trabaja en español por defecto. Las fuentes o entregables pueden utilizar otros idiomas cuando el mercado objetivo lo requiera.
