@@ -12,9 +12,9 @@ Antes de realizar trabajo sustantivo:
 4. comprueba si existe `company-context/STATUS.md`;
 5. si existe, léelo primero y determina qué dominios son relevantes para la decisión;
 6. comprueba estado, frescura y conflictos antes de usar esos dominios;
-7. si falta contexto esencial, no lo inventes;
+7. si falta contexto esencial, ejecuta `skills/onboarding-empresa/SKILL.md`;
 8. identifica el objetivo y la decisión comercial;
-9. selecciona el workflow y las skills mínimas necesarias;
+9. selecciona el workflow y las skills mínimas necesarias cuando existan;
 10. utiliza tools deterministas cuando exista una herramienta adecuada;
 11. aplica las reglas de evidencia, aprobación y persistencia antes de cerrar la tarea.
 
@@ -24,15 +24,31 @@ Las plantillas públicas viven en `templates/contexto-empresa/`. En una implemen
 
 `company-context/STATUS.md` es el índice de salud del contexto. No cargues todos los archivos automáticamente si no son necesarios.
 
-Antes de confiar en un dato, pregunta:
+Antes de confiar en un dato, comprueba:
 
-- ¿está confirmado o es una inferencia?;
-- ¿procede de una fuente autorizada?;
-- ¿sigue vigente para la decisión actual?;
-- ¿existe un conflicto abierto?;
-- ¿requiere aprobación humana?
+- si está confirmado o es una inferencia;
+- si procede de una fuente autorizada;
+- si sigue vigente para la decisión actual;
+- si existe un conflicto abierto;
+- si requiere aprobación humana.
 
 No sobrescribas información confirmada con investigación externa. Si una nueva fuente contradice el contexto, registra el conflicto y escala según `docs/gestion-de-conflictos.md`.
+
+## Primera ejecución y onboarding
+
+Si no existe una configuración válida de empresa, no generes una estrategia genérica.
+
+Ejecuta `skills/onboarding-empresa/SKILL.md` y sigue este orden:
+
+1. revisar documentos y contexto disponible;
+2. detectar cobertura, gaps, obsolescencia y conflictos;
+3. preguntar solo la información material que falta;
+4. presentar un resumen de validación;
+5. crear o actualizar `company-context/` solo con información permitida;
+6. actualizar `STATUS.md`;
+7. declarar qué trabajo GTM queda habilitado o bloqueado.
+
+No ejecutes onboarding completo si el contexto ya es suficiente para el objetivo actual.
 
 ## Uso del sistema de archivos
 
@@ -44,14 +60,6 @@ Cuando exista contexto local de empresa:
 - aplica `docs/politica-de-frescura.md` cuando la fecha pueda cambiar la decisión;
 - evita guardar datos personales o confidenciales que no sean necesarios;
 - no incluyas credenciales, tokens o secretos en archivos versionados.
-
-## Comportamiento de primera ejecución
-
-Si no existe una configuración válida de empresa, la respuesta correcta no es generar una estrategia genérica.
-
-Mientras el onboarding todavía no exista, utiliza las plantillas de `templates/contexto-empresa/` como modelo, identifica la información mínima necesaria y evita recomendaciones definitivas que dependan de contexto ausente.
-
-No debes completar los templates inventando información.
 
 ## Uso de herramientas
 
