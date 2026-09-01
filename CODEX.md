@@ -11,12 +11,14 @@ Antes de realizar trabajo sustantivo:
 1. lee `AGENTS.md`;
 2. lee `ARCHITECTURE.md`;
 3. carga únicamente la documentación relevante de `docs/`;
-4. comprueba si existe contexto de empresa válido;
-5. si falta contexto esencial, no lo inventes;
-6. identifica el objetivo y la decisión comercial;
-7. selecciona el workflow y las skills mínimas necesarias;
-8. utiliza tools deterministas cuando exista una herramienta adecuada;
-9. aplica las reglas de evidencia, aprobación y persistencia antes de cerrar la tarea.
+4. comprueba si existe `company-context/STATUS.md`;
+5. si existe, léelo primero y determina qué dominios son necesarios para la decisión;
+6. valida estado, frescura y conflictos de esos dominios;
+7. si falta contexto esencial, no lo inventes;
+8. identifica el objetivo y la decisión comercial;
+9. selecciona el workflow y las skills mínimas necesarias;
+10. utiliza tools deterministas cuando exista una herramienta adecuada;
+11. aplica las reglas de evidencia, aprobación y persistencia antes de cerrar la tarea.
 
 ## Uso de archivos, shell y herramientas
 
@@ -29,21 +31,28 @@ Principio:
 
 No uses código para ocultar una decisión metodológica que debería ser explícita. No uses razonamiento probabilístico del modelo para operaciones que deben ser deterministas.
 
-## Contexto de empresa
+## Company Context Engine
 
-Cuando en fases posteriores exista `company-context/`:
+Las plantillas públicas viven en `templates/contexto-empresa/`. El contexto operativo de una empresa concreta debe vivir en `company-context/`.
 
-- valida su estado antes de usarlo;
-- no conviertas inferencias en verdad de empresa;
-- no sobrescribas hechos confirmados a partir de una sola fuente externa;
-- conserva trazabilidad de cambios relevantes;
-- no escribas secretos o credenciales en archivos versionados.
+`company-context/STATUS.md` es el punto de entrada obligatorio al contexto. No cargues todos los dominios por defecto.
+
+Antes de usar o modificar contexto:
+
+- comprueba procedencia y estado;
+- comprueba si la frescura puede cambiar la decisión;
+- identifica conflictos abiertos;
+- aplica `docs/politica-de-escritura-de-contexto.md`;
+- aplica `docs/politica-de-frescura.md`;
+- usa `docs/gestion-de-conflictos.md` si dos fuentes materiales no coinciden.
+
+No conviertas inferencias en verdad de empresa y no sobrescribas hechos confirmados a partir de una sola fuente externa.
 
 ## Primera ejecución
 
-Si falta contexto válido de empresa, inicia el onboarding cuando esa capacidad esté implementada.
+Si falta contexto válido de empresa, no produzcas una estrategia genérica como sustituto.
 
-Mientras no exista, explica qué información mínima falta y evita conclusiones definitivas sobre mercados, clientes, distribuidores o estrategia.
+Mientras el onboarding no esté implementado, utiliza `templates/contexto-empresa/` para identificar y estructurar el contexto mínimo necesario. Nunca completes huecos con datos inventados.
 
 ## Cambios en el repositorio
 
@@ -58,13 +67,14 @@ Antes de crear una nueva skill, workflow o tool:
 ## Checklist antes de cerrar una tarea
 
 - objetivo/decisión entendidos;
-- contexto suficiente;
+- contexto suficiente, vigente y sin conflictos bloqueantes;
 - evidencia proporcionada o identificada;
 - hechos e hipótesis separados;
 - riesgos y gaps visibles;
 - recomendación proporcional a la confianza;
 - siguiente acción clara;
-- aprobación humana señalada cuando aplica.
+- aprobación humana señalada cuando aplica;
+- persistencia compatible con la política de contexto.
 
 ## Idioma
 
