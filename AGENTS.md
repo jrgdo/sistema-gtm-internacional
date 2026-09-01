@@ -18,11 +18,11 @@ Antes de ejecutar una tarea GTM sustantiva:
 4. si existe, leer `company-context/STATUS.md` antes que el resto del contexto;
 5. cargar únicamente los dominios de contexto necesarios para la decisión;
 6. comprobar estado, relevancia, conflictos y frescura de esos dominios;
-7. si no existe contexto o es insuficiente, no inventar: utilizar las plantillas de `templates/contexto-empresa/` y, cuando exista, ejecutar el onboarding;
+7. si no existe contexto o es insuficiente para el objetivo, ejecutar `skills/onboarding-empresa/SKILL.md`;
 8. identificar el objetivo del usuario;
 9. reformularlo como una decisión comercial o entregable concreto;
 10. identificar dependencias y contexto mínimo;
-11. seleccionar el workflow más pequeño que resuelva correctamente la tarea;
+11. seleccionar el workflow más pequeño que resuelva correctamente la tarea cuando exista;
 12. seleccionar solo las skills necesarias;
 13. usar tools deterministas para cálculo, validación, persistencia o transformación cuando existan;
 14. comprobar evidencia, supuestos, riesgos y aprobaciones;
@@ -52,7 +52,23 @@ Las reglas detalladas están en:
 - `docs/politica-de-frescura.md`;
 - `docs/gestion-de-conflictos.md`.
 
-## 5. Modelo de verdad
+## 5. Onboarding de empresa
+
+La skill canónica de configuración está en `skills/onboarding-empresa/SKILL.md`.
+
+Debe ejecutarse cuando:
+
+- no existe `company-context/`;
+- falta `STATUS.md`;
+- faltan dominios bloqueantes para la decisión actual;
+- existen conflictos u obsolescencia que impiden utilizar el contexto con seguridad;
+- el usuario pide configurar o actualizar el agente para su empresa.
+
+El onboarding debe ser adaptativo: revisar primero la documentación disponible, detectar cobertura y gaps, preguntar solo lo necesario y validar antes de promover información a verdad operativa.
+
+No ejecutar onboarding completo si el contexto ya es suficiente para la decisión actual.
+
+## 6. Modelo de verdad
 
 No mezclar silenciosamente estas categorías:
 
@@ -67,7 +83,7 @@ Una inferencia nunca debe guardarse como verdad de empresa sin validación.
 
 Estados conceptuales adicionales para persistencia: `PENDIENTE_DE_VALIDAR`, `OBSOLETO` y `CONFLICTO`.
 
-## 6. Política de escritura
+## 7. Política de escritura
 
 Puede incorporarse como contexto confirmado información explícitamente proporcionada por un responsable autorizado o respaldada por documentación interna vigente y trazable.
 
@@ -83,7 +99,7 @@ No promocionar automáticamente a verdad de empresa:
 
 Ante una contradicción material, no elegir silenciosamente una versión. Registrar el conflicto y solicitar validación.
 
-## 7. Especialización industrial B2B
+## 8. Especialización industrial B2B
 
 Evita aplicar automáticamente metodologías de SaaS B2B, e-commerce o consumo cuando no encajan.
 
@@ -106,7 +122,7 @@ En industrial B2B considera, cuando sea relevante:
 
 No supongas que todos estos factores aplican siempre. Selecciona los relevantes para la decisión.
 
-## 8. Contexto español e internacional
+## 9. Contexto español e internacional
 
 El usuario objetivo puede ser una empresa española que:
 
@@ -120,13 +136,13 @@ El usuario objetivo puede ser una empresa española que:
 
 No trates España como el único contexto posible. El sistema debe poder analizar cualquier mercado objetivo y trabajar con fuentes en otros idiomas.
 
-## 9. Routing
+## 10. Routing
 
 No ejecutar componentes por costumbre.
 
 Routing conceptual:
 
-- contexto insuficiente → onboarding/contexto;
+- contexto insuficiente → `onboarding-empresa`;
 - preparación internacional incierta → diagnóstico;
 - público objetivo incierto → ICP;
 - elección de países → priorización de mercados;
@@ -137,7 +153,7 @@ Routing conceptual:
 
 Si faltan fundamentos necesarios, detener y enrutar upstream en lugar de inventarlos.
 
-## 10. Evidencia
+## 11. Evidencia
 
 Priorizar fuentes primarias, oficiales, empresariales o sectoriales adecuadas a la afirmación.
 
@@ -152,7 +168,7 @@ Registrar, cuando sea material:
 
 No convertir una señal débil en una necesidad de cliente ni una correlación en causalidad.
 
-## 11. Aprobación humana
+## 12. Aprobación humana
 
 Requiere validación humana antes de tratar como definitivo cualquier elemento sensible, especialmente:
 
@@ -171,7 +187,7 @@ Requiere validación humana antes de tratar como definitivo cualquier elemento s
 
 Consultar `company-context/APROBACIONES.md` cuando exista. Si no está definido el aprobador, marcar `REQUIERE_VALIDACION_HUMANA`.
 
-## 12. Persistencia
+## 13. Persistencia
 
 Guardar solo información que tenga valor futuro y un estado claro.
 
@@ -186,7 +202,7 @@ No guardar automáticamente como verdad:
 
 La fuente de verdad controlada es `company-context/`; no debe convertirse en una memoria indiscriminada de todo lo que el modelo ha visto.
 
-## 13. Estándar mínimo de salida
+## 14. Estándar mínimo de salida
 
 Todo entregable sustantivo debe dejar claros, explícita o implícitamente según el formato:
 
@@ -199,7 +215,7 @@ Todo entregable sustantivo debe dejar claros, explícita o implícitamente segú
 7. validación/aprobación necesaria;
 8. siguiente acción.
 
-## 14. Calidad de componentes futuros
+## 15. Calidad de componentes futuros
 
 Ninguna skill, workflow o tool debe añadirse como un prompt genérico.
 
@@ -209,6 +225,8 @@ Debe cumplir las convenciones definidas en:
 - `docs/convenciones-de-workflows.md`
 - `docs/convenciones-de-tools.md`
 
-## 15. Límites del repositorio público
+`skills/onboarding-empresa/` es la implementación de referencia inicial para el estándar de skills.
+
+## 16. Límites del repositorio público
 
 Este repositorio debe ser útil de forma autónoma, pero no debe incorporar por defecto arquitectura de producción específica de clientes, credenciales, automatizaciones empresariales privadas, datos confidenciales ni infraestructura que requiera una implementación profesional personalizada.
