@@ -1,0 +1,32 @@
+version: "1.0"
+tipo_contrato: decision
+
+id_decision: null
+objetivo: null
+pregunta_de_decision: null
+
+opciones_consideradas: []
+
+criterios: []
+
+recomendacion:
+  opcion: null
+  racional: null
+
+confianza:
+  nivel: null
+  justificacion: null
+
+hechos_clave: []
+evidencia_clave: []
+supuestos: []
+desconocidos: []
+riesgos: []
+
+condiciones_para_avanzar: []
+validacion_humana: []
+
+estado_decision: null   # preparada | requiere_evidencia | requiere_validacion | bloqueada | cerrada
+
+siguiente_accion: null
+responsable_humano: null
