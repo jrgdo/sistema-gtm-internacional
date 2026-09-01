@@ -1,0 +1,34 @@
+version: "1.0"
+tipo_contrato: evidencia
+
+id_evidencia: null
+afirmacion_soportada: null
+
+fuente:
+  tipo: null   # interna | primaria_externa | secundaria | usuario | sistema
+  titulo: null
+  referencia: null
+  fecha_fuente: null
+  fecha_acceso: null
+
+alcance:
+  geografia: null
+  mercado: null
+  segmento: null
+  aplicacion: null
+
+calidad:
+  actualidad: null
+  autoridad: null
+  relevancia: null
+  consistencia: null
+
+clasificacion:
+  tipo: null   # hecho | señal | observacion | dato_operativo
+  confianza: null
+
+limitaciones: []
+conflictos_con: []
+
+uso_permitido: null
+requiere_validacion_humana: false
