@@ -13,6 +13,8 @@ USUARIO
   ↓
 AGENTS.md + CLAUDE.md / CODEX.md
   ↓
+COMPANY CONTEXT ENGINE
+  ↓
 AGENTE GTM INTERNACIONAL
   ↓
 VALIDACIÓN DE CONTEXTO
@@ -35,6 +37,9 @@ PERSISTENCIA VALIDADA
 ### Instrucciones raíz
 Definen cómo debe comportarse cualquier asistente que opere el repositorio.
 
+### Company Context Engine
+Mantiene contexto operativo de empresa con estados, procedencia, frescura, conflictos y reglas de actualización. No es una memoria indiscriminada del modelo.
+
 ### Agente
 Decide qué proceso ejecutar, qué información falta, qué skill necesita y cuándo detenerse o pedir validación.
 
@@ -47,13 +52,81 @@ Contiene metodología especializada reutilizable para una responsabilidad concre
 ### Tool
 Ejecuta trabajo determinista: cálculos, schemas, persistencia, validación, transformación o integración.
 
-### Contexto de empresa
-Contiene la verdad validada de la empresa, separada de investigación externa e hipótesis.
-
 ### Memoria
-Conserva decisiones, hipótesis y aprendizajes con estado y trazabilidad adecuados.
+Conserva decisiones, hipótesis y aprendizajes con estado y trazabilidad adecuados. Se implementará en una fase posterior y debe mantenerse separada de la verdad de empresa.
 
-## 4. Principio WAT aplicado
+## 4. Company Context Engine
+
+Las plantillas públicas del motor viven en:
+
+`templates/contexto-empresa/`
+
+Una implementación concreta deberá crear un workspace local equivalente en:
+
+`company-context/`
+
+Ese workspace no forma parte del repositorio público con datos reales de cliente.
+
+### 4.1 Punto de entrada
+
+`company-context/STATUS.md` debe leerse antes de cualquier trabajo GTM sustantivo.
+
+Resume:
+
+- estado general;
+- cobertura por dominio;
+- última revisión;
+- gaps materiales;
+- conflictos abiertos;
+- información que requiere actualización.
+
+### 4.2 Dominios
+
+El modelo inicial contempla:
+
+- empresa;
+- productos y servicios;
+- aplicaciones;
+- ICP y clientes;
+- mercados;
+- estrategia;
+- objetivo actual;
+- ventas y canales;
+- restricciones;
+- aprobaciones;
+- claims aprobados;
+- marca y voz;
+- terminología.
+
+El agente debe cargar solo los dominios relevantes para la decisión.
+
+### 4.3 Estados de dominio
+
+- `PENDIENTE`;
+- `PARCIAL`;
+- `VALIDADO`;
+- `OBSOLETO`;
+- `CONFLICTO`.
+
+Estos estados resumen la salud de un dominio y no sustituyen la clasificación conceptual de cada afirmación como confirmada, inferida, hipótesis, pendiente de validación, obsoleta o conflictiva.
+
+### 4.4 Principios de persistencia
+
+- No convertir investigación externa en verdad interna sin validación.
+- No sobrescribir silenciosamente información confirmada.
+- Tratar frescura según naturaleza del dato y decisión, no con una caducidad universal.
+- Hacer visibles contradicciones materiales.
+- Minimizar datos y no almacenar secretos.
+- Mantener la marca y voz separadas de hechos técnicos y estratégicos.
+- Mantener el objetivo actual separado de verdad estable de empresa.
+
+Las políticas están documentadas en:
+
+- `docs/politica-de-escritura-de-contexto.md`;
+- `docs/politica-de-frescura.md`;
+- `docs/gestion-de-conflictos.md`.
+
+## 5. Principio WAT aplicado
 
 La arquitectura adopta el patrón conceptual Workflows–Agents–Tools sin convertir el acrónimo en la propuesta de valor.
 
@@ -63,17 +136,18 @@ La arquitectura adopta el patrón conceptual Workflows–Agents–Tools sin conv
 
 Las skills complementan este patrón como módulos metodológicos especializados.
 
-## 5. Frontera público / implementación profesional
+## 6. Frontera público / implementación profesional
 
 ### Público
 
-- onboarding manual;
+- plantillas de contexto;
+- onboarding manual en fases posteriores;
 - contexto local;
 - skills GTM seleccionadas;
 - workflows manuales/asistidos;
 - scorecards transparentes;
 - tools locales sencillas;
-- memoria básica;
+- memoria básica futura;
 - aprobación humana.
 
 ### Fuera del alcance base
@@ -89,7 +163,7 @@ Las skills complementan este patrón como módulos metodológicos especializados
 - learning loops automáticos;
 - automatización de comunicaciones externas.
 
-## 6. Dependencias y routing
+## 7. Dependencias y routing
 
 El sistema debe preferir el menor conjunto de componentes capaz de resolver correctamente la decisión.
 
@@ -102,7 +176,9 @@ Ejemplos:
 - no redactar un approach comercial sin comprender cuenta, objetivo y valor relevante;
 - no concluir sobre performance sin datos observados.
 
-## 7. Modelo de estado
+Un contexto incompleto no bloquea automáticamente toda tarea: bloquea o reduce confianza únicamente cuando falta información material para la decisión concreta.
+
+## 8. Modelo de estado del sistema
 
 Las futuras ejecuciones deben poder distinguir al menos:
 
@@ -115,9 +191,9 @@ Las futuras ejecuciones deben poder distinguir al menos:
 - `LISTO_PARA_DECISION`;
 - `CERRADO`.
 
-Los estados exactos se formalizarán en fases posteriores.
+Los estados exactos de ejecución se formalizarán en fases posteriores. No confundir estos estados de ejecución con los estados de los dominios de contexto.
 
-## 8. Criterios de calidad de arquitectura
+## 9. Criterios de calidad de arquitectura
 
 Una nueva capacidad solo se añade cuando:
 
@@ -128,12 +204,13 @@ Una nueva capacidad solo se añade cuando:
 5. evita duplicar lógica;
 6. respeta evidencia y aprobación;
 7. encaja con empresas industriales B2B e internacionalización;
-8. mantiene separada la lógica pública de una implementación privada de producción.
+8. mantiene separada la lógica pública de una implementación privada de producción;
+9. respeta las políticas del Company Context Engine.
 
-## 9. Evolución por fases
+## 10. Evolución por fases
 
-- **Fase 1:** constitución, arquitectura y convenciones.
-- **Fase 2:** modelo de contexto de empresa.
+- **Fase 1:** constitución, arquitectura y convenciones. Completada.
+- **Fase 2:** modelo y plantillas de contexto de empresa. Completada a nivel de arquitectura y templates.
 - **Fase 3:** skill de onboarding.
 - **Fase 4:** agente GTM internacional.
 - **Fase 5:** contratos compartidos.
