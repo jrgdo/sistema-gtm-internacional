@@ -1,71 +1,77 @@
 # Guía operativa para Claude Code
 
-Claude Code debe tratar este repositorio como un sistema GTM estructurado, no como una colección de prompts.
+Claude Code debe tratar este repositorio como un sistema GTM estructurado y evaluable, no como una colección de prompts.
 
-## Inicio
+`AGENTS.md` contiene las reglas canónicas. Este archivo añade únicamente instrucciones específicas de ejecución para Claude Code.
+
+## Inicio obligatorio
 
 1. Lee `AGENTS.md`.
 2. Lee `ARCHITECTURE.md`.
-3. Lee `agents/agente-gtm-internacional/AGENT.md`.
+3. Si trabajas con el repositorio completo, lee `agents/agente-gtm-internacional/AGENT.md`.
 4. Comprueba `company-context/STATUS.md` si existe.
-5. Si falta contexto material, ejecuta `onboarding-empresa`.
-6. Identifica objetivo y decisión.
-7. Aplica routing, gates y camino mínimo.
-8. Usa contracts para handoffs cuando estén disponibles.
-9. Ejecuta workflow/skills/tools necesarios.
-10. Aplica Quality Guard antes de `LISTO_PARA_DECISION`.
+5. Identifica objetivo, decisión y contexto mínimo necesario.
+6. Ejecuta únicamente el workflow, skills y tools que correspondan.
+7. Aplica `qa/QUALITY-GUARD.md` antes de considerar un resultado listo para decisión.
 
-## Skills activas
+No cargues todos los documentos del repositorio por defecto. Abre únicamente las referencias necesarias para la decisión actual.
 
-- `sistema-gtm-internacional`
-- `onboarding-empresa`
-- `diagnostico-internacional`
-- `definicion-icp`
-- `priorizacion-de-mercados`
-- `investigacion-de-mercado`
-- `evaluacion-de-distribuidores`
-- `investigacion-de-cuentas`
-- `preparacion-comercial`
+## Primera ejecución
 
-## Contexto
+Si no existe contexto de empresa:
 
-`company-context/` es verdad operativa controlada. Leer `STATUS.md`, comprobar procedencia, frescura y conflictos, y no sobrescribirla con research externo.
+- usa `sistema-gtm-internacional` como punto de entrada cuando esté instalado mediante Agent Skills;
+- usa `onboarding-empresa` para construir contexto validado;
+- no rellenes huecos inventando estrategia, ICP, claims, aplicaciones o restricciones.
 
 ## Uso de herramientas
 
-- modelo → juicio, interpretación, investigación y síntesis;
+- modelo → juicio, investigación, interpretación y síntesis;
 - código/tool → cálculo, validación, transformación y persistencia repetible.
 
-No uses razonamiento probabilístico para una operación que debe ser determinista.
+No uses razonamiento probabilístico para operaciones que deben ser deterministas. Si existe una tool adecuada en `tools/`, úsala en vez de recalcular manualmente.
 
-## Reglas críticas
+## Reglas que no debes degradar
 
 - research != customer discovery;
 - señal != intención;
 - cargo != autoridad;
 - unknown != cero;
-- web/portfolio != acceso real de distribuidor;
+- presencia online de partner != acceso comercial;
 - fit de cuenta != necesidad confirmada;
-- score != decisión.
+- score != decisión;
+- aprendizaje != causalidad.
 
-## Aprobación y escalado
+## Acciones sensibles
 
-No validar autónomamente claims, certificaciones, suitability regulatoria, pricing, exclusividad, garantías, contratos ni compromisos externos sensibles.
+No apruebes autónomamente claims, certificaciones, suitability regulatoria, pricing, descuentos, garantías, exclusividad, contratos ni comunicaciones externas sensibles.
 
-Escalar fiscalidad, legal, regulación, aduanas, finanzas sensibles e ingeniería crítica.
+Escala fiscalidad, legal, regulación, aduanas, finanzas sensibles e ingeniería crítica.
 
-## Memoria
+Antes de una acción difícil de revertir o que afecte sistemas externos, confirma que existe autorización suficiente.
 
-No mezclar `company-context/` con decisiones, hipótesis o aprendizajes. Promover cambios a verdad de empresa solo mediante política de contexto y validación.
+## Cambios en el repositorio
 
-## Tests
+Antes de añadir una capacidad nueva:
 
-Tras cambios de código/arquitectura, hacer best effort para ejecutar:
+1. comprueba si ya existe;
+2. lee la convención correspondiente en `docs/`;
+3. define la decisión que soporta;
+4. respeta `contracts/`;
+5. añade escenarios o tests;
+6. evita duplicar metodología entre agente, workflow y skill;
+7. respeta la frontera pública.
+
+## Validación
+
+Después de cambios de código o arquitectura, haz best effort para ejecutar:
 
 ```bash
 python -m py_compile tools/*.py tests/validar_sistema.py skills/sistema-gtm-internacional/scripts/inicializar_contexto.py
 python tests/validar_sistema.py
 ```
+
+No declares terminado un cambio con checks conocidos fallando sin explicarlo.
 
 ## Idioma
 
