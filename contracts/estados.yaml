@@ -1,0 +1,39 @@
+version: "1.0"
+tipo_contrato: estados
+
+estados_sistema:
+  - SIN_CONFIGURAR
+  - CONTEXTUALIZANDO
+  - CONTEXTO_PARCIAL
+  - LISTO_PARA_ROUTING
+  - REQUIERE_CLARIFICACION
+  - REQUIERE_EVIDENCIA
+  - EN_EJECUCION
+  - REQUIERE_VALIDACION_HUMANA
+  - LISTO_PARA_DECISION
+  - BLOQUEADO
+  - CERRADO
+
+estados_contexto:
+  - PENDIENTE
+  - PARCIAL
+  - VALIDADO
+  - OBSOLETO
+  - CONFLICTO
+
+resultados_onboarding:
+  - CONTEXTO_VALIDADO_PARA_OBJETIVO
+  - CONTEXTO_PARCIAL_UTILIZABLE
+  - REQUIERE_VALIDACION
+  - CONFLICTO_MATERIAL
+  - INPUT_INSUFICIENTE
+
+stops:
+  - BLOQUEADO_CONTEXTO
+  - BLOQUEADO_CONFLICTO
+  - BLOQUEADO_EVIDENCIA
+  - REQUIERE_VALIDACION_HUMANA
+  - FUERA_DE_SCOPE
+
+regla:
+  descripcion: "No mezclar estados de sistema, estados de contexto y resultados propios de una skill. Cada capa conserva su semántica."
