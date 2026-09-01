@@ -1,0 +1,34 @@
+version: "1.0"
+tipo_contrato: cierre_ejecucion
+
+objetivo: null
+decision_o_entregable: null
+estado_final: null
+
+componentes_utilizados: []
+
+contexto_clave: []
+evidencia_clave: []
+
+hechos: []
+inferencias: []
+hipotesis: []
+supuestos: []
+gaps_materiales: []
+riesgos: []
+
+confianza:
+  nivel: null
+  justificacion: null
+
+aprobacion_necesaria: []
+
+resultado_para_usuario: null
+siguiente_accion: null
+responsable_siguiente: null
+
+persistencia:
+  decisiones_a_registrar: []
+  contexto_a_actualizar: []
+  aprendizajes_candidatos: []
+  elementos_no_persistidos: []
