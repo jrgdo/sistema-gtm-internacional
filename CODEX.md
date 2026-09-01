@@ -14,7 +14,7 @@ Codex debe tratar este repositorio como un sistema GTM estructurado, no como una
 6. Devuelve el control al Agente GTM Internacional.
 7. Identifica objetivo y decisión.
 8. Aplica routing, gates y camino mínimo.
-9. Usa contratos de `contracts/` para handoffs y resultados.
+9. Usa contratos de `contracts/`.
 10. Ejecuta solo las skills necesarias.
 
 ## Skills activas
@@ -23,15 +23,31 @@ Codex debe tratar este repositorio como un sistema GTM estructurado, no como una
 - `skills/diagnostico-internacional/`
 - `skills/definicion-icp/`
 - `skills/priorizacion-de-mercados/`
+- `skills/investigacion-de-mercado/`
+- `skills/evaluacion-de-distribuidores/`
 
-Routing:
+Routing principal:
 
 - falta contexto → onboarding;
-- readiness incierto → diagnóstico internacional;
+- readiness incierto → diagnóstico;
 - ICP insuficiente → definición de ICP;
-- comparación de países → priorización de mercados.
+- comparación de países → priorización;
+- evidencia detallada de mercado → investigación de mercado;
+- evaluación de partner identificado → evaluación de distribuidores.
 
 No simules como implementadas skills futuras.
+
+## Research
+
+No producir country reports genéricos cuando la decisión requiera evidence gathering acotado.
+
+Desk research no equivale a market validation. Mantener separados hechos, señales, inferencias, hipótesis y unknowns. No inferir necesidad de compra ni demanda accesible desde señales débiles.
+
+## Distribuidores
+
+No usar tamaño, presencia web, portfolio o antigüedad como sustitutos de acceso real, capacidad técnica, cobertura o prioridad futura.
+
+Distinguir discovery, pre-evaluación y qualification. No recomendar exclusividad ni condiciones contractuales sensibles sin validación humana.
 
 ## Archivos, shell y tools
 
@@ -40,23 +56,21 @@ Cuando estén autorizados:
 - modelo → juicio, síntesis e interpretación;
 - código/tool → cálculo, schema validation, transformación y persistencia repetible.
 
-No uses razonamiento probabilístico para operaciones deterministas ni código para ocultar una decisión metodológica.
+No uses razonamiento probabilístico para operaciones deterministas ni código para ocultar decisiones metodológicas.
 
 ## Company Context Engine
 
-`company-context/STATUS.md` es el punto de entrada obligatorio al contexto de empresa.
+`company-context/STATUS.md` es el punto de entrada obligatorio al contexto. Comprobar procedencia, estado, frescura y conflictos antes de utilizar o modificar información.
 
-Comprobar procedencia, estado, frescura y conflictos antes de utilizar o modificar información. Aplicar las políticas de `docs/` y no convertir research externo o inferencias en verdad interna.
+No convertir research externo o inferencias en verdad interna.
 
 ## Contratos
 
-Todo componente debe ser compatible con `contracts/`.
-
-Usa los contratos como semántica interna; no es necesario exponer YAML al usuario.
+Todo componente debe ser compatible con `contracts/`. Los contratos son semántica interna; no es necesario exponer YAML al usuario.
 
 ## Especialización industrial B2B
 
-Considerar cuando corresponda aplicaciones técnicas, ciclos largos, canal, homologación, servicio, logística, capacidad y complejidad de compra. Evitar extrapolar automáticamente playbooks SaaS o consumo.
+Considerar cuando corresponda aplicaciones técnicas, ciclos largos, canal, homologación, servicio, logística, capacidad y complejidad de compra.
 
 ## Aprobación y escalado
 
@@ -73,21 +87,8 @@ Antes de crear una nueva capacidad:
 3. usa contratos compartidos;
 4. define responsabilidad y tests;
 5. evita duplicación;
-6. respeta la frontera pública del proyecto.
-
-## Calidad
-
-Antes de cerrar una tarea:
-
-- decisión entendida;
-- contexto suficiente;
-- evidencia trazable;
-- hechos e hipótesis separados;
-- confianza justificada;
-- gaps y riesgos visibles;
-- siguiente acción clara;
-- aprobación humana señalada cuando aplique.
+6. respeta la frontera pública.
 
 ## Idioma
 
-Trabaja en español por defecto. Puede investigar y producir materiales localizados en otros idiomas cuando la decisión internacional lo requiera.
+Trabaja en español por defecto. Puede investigar fuentes locales y producir materiales localizados en otros idiomas cuando la decisión internacional lo requiera.
