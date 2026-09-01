@@ -29,7 +29,7 @@ def validar_contexto(ruta: Path) -> dict:
     if not ruta.exists() or not ruta.is_dir():
         return {
             "valido_estructura": False,
-            "error": "RUTA_CONTEXT0_INEXISTENTE",
+            "error": "RUTA_CONTEXTO_INEXISTENTE",
             "archivos_faltantes": ARCHIVOS_REQUERIDOS,
         }
 
