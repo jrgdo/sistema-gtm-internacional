@@ -1,0 +1,39 @@
+version: "1.0"
+tipo_contrato: handoff
+
+origen:
+  tipo: null
+  nombre: null
+
+destino:
+  tipo: null
+  nombre: null
+
+motivo: null
+
+objetivo: null
+decision: null
+
+estado_origen: null
+estado_destino_esperado: null
+
+contexto_relevante: []
+inputs_confirmados: []
+restricciones: []
+gaps: []
+evidencia_disponible: []
+
+resultado_esperado: null
+criterio_de_finalizacion: null
+
+aprobaciones_pendientes: []
+
+loop:
+  es_retorno: false
+  nueva_informacion_material: false
+  motivo_repeticion: null
+
+reglas:
+  - "No repetir un componente si no existe nueva información material o una condición pendiente explícita."
+  - "El destino no debe reabrir todo el contexto si el handoff ya contiene lo necesario."
+  - "No ocultar gaps o conflictos para facilitar el routing."
