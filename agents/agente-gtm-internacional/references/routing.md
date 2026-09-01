@@ -2,92 +2,100 @@
 
 ## Principio
 
-El routing debe basarse en **objetivo + decisión + contexto + dependencias**, no solo en palabras clave.
+El routing se basa en **objetivo + decisión + contexto + dependencias + etapa**, no solo en palabras clave.
 
 ## Árbol inicial
 
 ```text
 PETICIÓN
   ↓
-¿Existe contexto suficiente para esta decisión?
+¿Contexto suficiente para esta decisión?
   ├─ NO → onboarding-empresa
   └─ SÍ
        ↓
-¿La decisión está suficientemente clara?
+¿Decisión suficientemente clara?
   ├─ NO → REQUIERE_CLARIFICACION
   └─ SÍ
        ↓
-¿Existe workflow formalizado?
+¿Existe workflow adecuado?
   ├─ SÍ → ejecutar workflow
   └─ NO
        ↓
 ¿Existe skill directa adecuada?
   ├─ SÍ → ejecutar skill
-  └─ NO → declarar capacidad no formalizada / fuera de scope según corresponda
+  └─ NO → ayuda limitada / capacidad no formalizada / FUERA_DE_SCOPE
 ```
 
-## Mapa de negocio previsto
+## Routing activo
 
-### Configurar o actualizar empresa
+### Configurar/actualizar empresa
 → `onboarding-empresa`
 
-### Evaluar readiness export/internacional
-→ futura `diagnostico-internacional`
+### Evaluar readiness internacional
+→ `diagnostico-internacional`
 
-### Definir o revisar ICP
-→ futura `definicion-icp`
+### Definir/revisar ICP
+→ `definicion-icp`
 
-### Decidir entre países o mercados
-→ futura `priorizacion-de-mercados`
+### Comparar países/mercados
+→ `priorizacion-de-mercados`
 
-### Comprender un mercado específico
-→ futura `investigacion-de-mercado`
+### Comprender mercado/segmento
+→ `investigacion-de-mercado`
 
 ### Evaluar distribuidor/partner
-→ futura `evaluacion-de-distribuidores`
+→ `evaluacion-de-distribuidores`
 
-### Preparar una cuenta objetivo
-→ futura `investigacion-de-cuentas`
+### Investigar cuenta objetivo
+→ `investigacion-de-cuentas`
 
-### Preparar una reunión o acción comercial
-→ futura `preparacion-comercial`
+### Preparar reunión/acción comercial
+→ `preparacion-comercial`
+
+## Workflows
+
+Cuando la tarea requiere varias skills/gates:
+
+- configuración → `workflows/configurar-agente/`;
+- readiness → `workflows/diagnosticar-expansion/`;
+- comparación → `workflows/comparar-mercados/`;
+- exploración → `workflows/explorar-nuevo-mercado/`;
+- partner → `workflows/evaluar-distribuidor/`;
+- cuenta → `workflows/investigar-cuenta/`;
+- reunión → `workflows/preparar-reunion/`.
 
 ## Ambigüedad típica
 
-Petición: "Quiero crecer en Alemania".
+“Quiero crecer en Alemania” puede significar priorizar Alemania, investigarla, buscar canal, evaluar partners, construir cuentas o preparar ejecución.
 
-Posibles decisiones:
-
-- decidir si Alemania merece prioridad;
-- investigar el mercado alemán;
-- buscar canal;
-- evaluar distribuidores;
-- construir pipeline de cuentas;
-- preparar una acción comercial.
-
-El agente debe usar el contexto existente para reducir ambigüedad y hacer solo la pregunta mínima restante.
+Usar contexto para reducir ambigüedad y hacer solo la pregunta mínima que cambie routing.
 
 ## Routing upstream
 
-Si falta una dependencia crítica, volver upstream.
-
-Ejemplos:
-
-- priorización sin ICP suficiente → definir/revisar ICP;
-- evaluar distribuidor sin perfil de partner → resolver criterio de partner antes;
-- preparación comercial sin cuenta/objetivo → completar investigación o contexto;
-- trabajo sensible con claims no aprobados → validación humana.
+- priorización sin ICP → `definicion-icp`;
+- market research sin pregunta clara → clarificar decisión;
+- distribuidor sin perfil de partner → resolver criteria upstream;
+- cuenta sin ICP → `definicion-icp`;
+- preparación comercial sin contexto de cuenta/partner → investigación correspondiente;
+- claims/condiciones sensibles → validation humana.
 
 ## Routing downstream
 
-Solo avanzar cuando el output anterior cumple su criterio de finalización.
+Avanzar solo cuando el output anterior cumple criterio de finalización.
 
-No usar como trigger suficiente frases como "parece correcto", "probablemente" o "hay bastante información" si faltan campos materiales del contrato.
+Ejemplos:
+
+- market prioritization → market research cuando existen gaps capaces de cambiar ranking;
+- market research → partner evaluation cuando la hipótesis de canal lo justifica;
+- account research → preparación comercial cuando hay interacción próxima;
+- distributor evaluation → preparación comercial cuando existe reunión o siguiente compromiso.
+
+## Loops
+
+Solo volver a una capacidad anterior con nueva evidencia o cambio material de estado.
+
+No repetir `research → ranking → research` sin progreso.
 
 ## Camino mínimo
 
-Si una skill puede resolver correctamente la decisión, no ejecutar un workflow más amplio por defecto.
-
-## Capacidades aún no implementadas
-
-Mientras una capacidad futura no exista, el agente debe decirlo internamente y evitar simular que se ha ejecutado una skill formal inexistente. Puede ofrecer una ayuda limitada basada en las reglas generales del sistema si la tarea es segura, dejando claro el menor nivel de formalización.
+Si una skill directa resuelve correctamente la decisión, no ejecutar un workflow más amplio.
